@@ -1,4 +1,5 @@
-import { styled } from '@mui/material';
+import { CssBaseline, styled } from '@mui/material';
+import AppProviders from './AppProviders';
 
 const AppContainer = styled('div')(({ theme }) => ({
 	display: 'block',
@@ -13,9 +14,12 @@ const Outer = styled('div')(() => ({
 
 function App() {
 	return (
-		<AppContainer>
-			<Outer>Welcome</Outer>
-		</AppContainer>
+		<AppProviders>
+			<CssBaseline />
+			<AppContainer>
+				<Outer>Welcome</Outer>
+			</AppContainer>
+		</AppProviders>
 	);
 }
 
