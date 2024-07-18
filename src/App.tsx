@@ -1,23 +1,33 @@
-import { CssBaseline, styled } from '@mui/material';
+import { styled } from '@mui/material';
 import AppProviders from './AppProviders';
+import Tabs from './Tabs';
 
 const AppContainer = styled('div')(({ theme }) => ({
-	display: 'block',
+	display: 'flex',
 	width: '100vw',
 	height: '100vh',
-	padding: theme.spacing(12),
+	flexDirection: 'column',
+	padding: theme.spacing(9, 9, 0, 9),
 }));
 
-const Outer = styled('div')(() => ({
-	background: '#fff3',
+const Outer = styled('div')(({ theme }) => ({
+	display: 'flex',
+	flexDirection: 'column',
+	background: theme.palette.background.paper,
+	height: '100%',
+	width: '100%',
+	flexGrow: 1,
+	flexShrink: 0,
+	overflow: 'auto',
 }));
 
 function App() {
 	return (
 		<AppProviders>
-			<CssBaseline />
 			<AppContainer>
-				<Outer>Welcome</Outer>
+				<Outer>
+					<Tabs />
+				</Outer>
 			</AppContainer>
 		</AppProviders>
 	);
