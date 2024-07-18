@@ -59,6 +59,11 @@ const typography = {
 	h1: {
 		fontSize: '2.25rem',
 	},
+	fontWeight: {
+		regular: 400,
+		medium: 500,
+		bold: 700,
+	},
 };
 
 const theme = createTheme({
