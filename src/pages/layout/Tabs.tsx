@@ -35,8 +35,8 @@ const StyledTab = styled(({ to, ...others }: LinkTabProps) => {
 	minHeight: theme.spacing(4),
 	textTransform: 'none',
 	[`&.${tabClasses.selected}`]: {
-		color: theme.palette.primary.main,
 		boxShadow: theme.shadows[10],
+		color: theme.palette.primary.main,
 		'&:hover': {
 			color: theme.palette.primary.main,
 		},

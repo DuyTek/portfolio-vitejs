@@ -1,8 +1,9 @@
 import { styled } from '@mui/material';
-import Tabs from '../../Tabs';
+import Tabs from './Tabs';
 import { Outlet } from 'react-router-dom';
 
 const AppContainer = styled('div')(({ theme }) => ({
+	boxShadow: theme.shadows[20],
 	display: 'flex',
 	width: '100vw',
 	height: '100vh',
@@ -21,12 +22,19 @@ const Outer = styled('div')(({ theme }) => ({
 	overflow: 'auto',
 }));
 
+const Inner = styled('div')(({ theme }) => ({
+	display: 'flex',
+	padding: theme.spacing(3),
+}));
+
 export default function PageLayout() {
 	return (
 		<AppContainer>
 			<Outer>
 				<Tabs />
-				<Outlet />
+				<Inner>
+					<Outlet />
+				</Inner>
 			</Outer>
 		</AppContainer>
 	);
