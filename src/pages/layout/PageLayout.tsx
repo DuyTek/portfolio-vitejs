@@ -23,8 +23,7 @@ const Outer = styled('div')(({ theme }) => ({
 }));
 
 const Inner = styled('div')(({ theme }) => ({
-	display: 'flex',
-	padding: theme.spacing(3),
+	padding: theme.spacing(3, 7),
 }));
 
 export default function PageLayout() {
