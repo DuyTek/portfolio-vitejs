@@ -52,25 +52,28 @@ export default function Home() {
 	});
 
 	return (
-		<Stack direction="row" justifyContent="space-between" height="100%">
-			<Stack>
-				<CustomCollapse in={checked}>
-					<Box sx={{ minWidth: 500 }}>
-						<Box sx={{ position: 'relative' }}>
-							<Name>EDWARD NGUYEN </Name>
-							FULL-STACK DEVELOPER
-							<animated.div
-								style={{
-									position: 'absolute',
-									...logoRotate,
-								}}
-							>
-								<ReactLogo />
-							</animated.div>
-						</Box>
+		<Stack
+			direction="row"
+			justifyContent="space-between"
+			height="100%"
+			sx={{ position: 'relative' }}
+		>
+			<CustomCollapse in={checked}>
+				<Box sx={{ minWidth: 500 }}>
+					<Box>
+						<Name>EDWARD NGUYEN </Name>
+						FULL-STACK DEVELOPER
 					</Box>
-				</CustomCollapse>
-			</Stack>
+				</Box>
+			</CustomCollapse>
+			<animated.div
+				style={{
+					position: 'absolute',
+					...logoRotate,
+				}}
+			>
+				<ReactLogo />
+			</animated.div>
 			{/* <Logos /> */}
 		</Stack>
 	);
