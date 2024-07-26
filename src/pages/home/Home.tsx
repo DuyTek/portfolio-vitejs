@@ -8,8 +8,9 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ReactLogo } from '../../logo';
 import { useSpring, animated } from '@react-spring/web';
+import { constants } from '../../config/constants';
+
 const CustomCollapse = ({ children, ...props }: CollapseProps) => (
 	<Collapse
 		orientation="horizontal"
@@ -25,8 +26,21 @@ const CustomCollapse = ({ children, ...props }: CollapseProps) => (
 );
 
 const Name = styled(Typography)(({ theme }) => ({
-	...theme.typography.h2,
+	...theme.typography.h1,
+	fontWeight: theme.typography.fontWeightBold,
 	color: theme.palette.secondary.main,
+}));
+
+const Description = styled(Typography)(({ theme }) => ({
+	maxWidth: 600,
+	width: '100%',
+	...theme.typography.body2,
+	lineHeight: 2,
+}));
+
+const Title = styled(Typography)(({ theme }) => ({
+	...theme.typography.h5,
+	fontWeight: theme.typography.fontWeightLight,
 }));
 
 export default function Home() {
@@ -34,47 +48,34 @@ export default function Home() {
 	const [checked, setChecked] = useState(false);
 
 	useEffect(() => setChecked(true), [pathname]);
-	const logoRotate = useSpring({
+	const showDescription = useSpring({
 		from: {
-			top: 300,
-			left: -180,
-			rotate: 0,
-			opacity: 0.01,
+			translateY: 0,
+			opacity: 0,
 		},
 		to: {
-			rotate: 360,
+			translateY: 50,
+			opacity: 1,
 		},
-		loop: true,
-		delay: 0,
+		delay: 2000,
 		config: {
-			duration: 8000,
+			duration: 500,
 		},
 	});
 
 	return (
-		<Stack
-			direction="row"
-			justifyContent="space-between"
-			height="100%"
-			sx={{ position: 'relative' }}
-		>
+		<Stack direction="column" spacing={10} height="100%">
 			<CustomCollapse in={checked}>
-				<Box sx={{ minWidth: 500 }}>
+				<Stack sx={{ minWidth: 600, justifyContent: 'space-between' }}>
 					<Box>
-						<Name>EDWARD NGUYEN </Name>
-						FULL-STACK DEVELOPER
+						<Name>{constants.fullName.toUpperCase()}</Name>
+						<Title>{constants.title.toLowerCase()}</Title>
 					</Box>
-				</Box>
+				</Stack>
 			</CustomCollapse>
-			<animated.div
-				style={{
-					position: 'absolute',
-					...logoRotate,
-				}}
-			>
-				<ReactLogo />
+			<animated.div style={{ ...showDescription }}>
+				<Description>{constants.descriptions}</Description>
 			</animated.div>
-			{/* <Logos /> */}
 		</Stack>
 	);
 }

@@ -4,7 +4,7 @@ const LOGO_SQUARE_SIZE = 50;
 const Logo = styled(SvgIcon)(() => ({}));
 
 export const ReactLogo = () => (
-	<Logo sx={{ width: 650, height: 650 }}>
+	<Logo sx={{ width: 80, height: 80 }}>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			aria-hidden="true"

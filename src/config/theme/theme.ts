@@ -57,7 +57,7 @@ const typography = {
 	fontFamily: ['"Roboto Mono"', '"Monaco"', 'monospace'].join(','),
 	fontSize: 14,
 	h1: {
-		fontSize: '2.25rem',
+		fontSize: '4.25rem',
 	},
 	fontWeight: {
 		regular: 400,
