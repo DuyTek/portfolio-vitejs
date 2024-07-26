@@ -1,5 +1,6 @@
 import {
 	Box,
+	Button,
 	Collapse,
 	CollapseProps,
 	Stack,
@@ -33,14 +34,16 @@ const Name = styled(Typography)(({ theme }) => ({
 
 const Description = styled(Typography)(({ theme }) => ({
 	maxWidth: 600,
+	margin: theme.spacing(2, 0),
 	width: '100%',
 	...theme.typography.body2,
 	lineHeight: 2,
 }));
 
 const Title = styled(Typography)(({ theme }) => ({
-	...theme.typography.h5,
+	...theme.typography.h6,
 	fontWeight: theme.typography.fontWeightLight,
+	letterSpacing: 1,
 }));
 
 export default function Home() {
@@ -50,11 +53,11 @@ export default function Home() {
 	useEffect(() => setChecked(true), [pathname]);
 	const showDescription = useSpring({
 		from: {
-			translateY: 0,
+			translateX: -50,
 			opacity: 0,
 		},
 		to: {
-			translateY: 50,
+			translateX: 0,
 			opacity: 1,
 		},
 		delay: 2000,
@@ -64,18 +67,23 @@ export default function Home() {
 	});
 
 	return (
-		<Stack direction="column" spacing={10} height="100%">
-			<CustomCollapse in={checked}>
-				<Stack sx={{ minWidth: 600, justifyContent: 'space-between' }}>
-					<Box>
-						<Name>{constants.fullName.toUpperCase()}</Name>
-						<Title>{constants.title.toLowerCase()}</Title>
-					</Box>
-				</Stack>
-			</CustomCollapse>
-			<animated.div style={{ ...showDescription }}>
-				<Description>{constants.descriptions}</Description>
-			</animated.div>
+		<Stack direction="row">
+			<Stack direction="column" spacing={10} height="100%">
+				<CustomCollapse in={checked}>
+					<Stack sx={{ minWidth: 600, justifyContent: 'space-between' }}>
+						<Box>
+							<Name>{constants.fullName.toUpperCase()}</Name>
+							<Title>{constants.title}</Title>
+						</Box>
+					</Stack>
+				</CustomCollapse>
+				<animated.div style={{ ...showDescription }}>
+					<Description>{constants.descriptions}</Description>
+					<Button variant="outlined" fullWidth={false}>
+						Contact Me &#8690;
+					</Button>
+				</animated.div>
+			</Stack>
 		</Stack>
 	);
 }

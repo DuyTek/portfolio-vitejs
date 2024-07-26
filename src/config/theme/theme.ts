@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeOptions } from '@mui/material/styles';
 
 const palette = {
 	primary: {
@@ -66,6 +66,31 @@ const typography = {
 	},
 };
 
+const components: ThemeOptions['components'] = {
+	MuiButton: {
+		styleOverrides: {
+			root: {
+				textTransform: 'none',
+			},
+			outlined: ({ theme }) => ({
+				borderColor: theme.palette.primary.main,
+				color: theme.palette.primary.main,
+				'&:hover': {
+					backgroundColor: theme.palette.primary.main,
+					color: theme.palette.primary.contrastText,
+				},
+			}),
+			contained: ({ theme }) => ({
+				backgroundColor: theme.palette.primary.main,
+				color: theme.palette.primary.contrastText,
+				'&:hover': {
+					backgroundColor: theme.palette.primary.dark,
+				},
+			}),
+		},
+	},
+};
+
 const theme = createTheme({
 	palette,
 	typography,
@@ -77,6 +102,7 @@ const theme = createTheme({
 			}
 			`,
 		},
+		...components,
 	},
 });
 

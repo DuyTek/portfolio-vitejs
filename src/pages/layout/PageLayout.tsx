@@ -14,7 +14,8 @@ const AppContainer = styled('div')(({ theme }) => ({
 const Outer = styled('div')(({ theme }) => ({
 	display: 'flex',
 	flexDirection: 'column',
-	background: theme.palette.background.paper,
+	background: 'transparent',
+	boxShadow: theme.shadows[5],
 	height: '100%',
 	width: '100%',
 	flexGrow: 1,
