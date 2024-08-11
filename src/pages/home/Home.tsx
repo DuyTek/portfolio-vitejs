@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSpring, animated } from '@react-spring/web';
 import { constants } from '../../config/constants';
+import ContactComponent from './Contacts';
 
 const CustomCollapse = ({ children, ...props }: CollapseProps) => (
 	<Collapse
@@ -49,6 +50,7 @@ const Title = styled(Typography)(({ theme }) => ({
 export default function Home() {
 	const { pathname } = useLocation();
 	const [checked, setChecked] = useState(false);
+	const [showContact, setShowContact] = useState(false);
 
 	useEffect(() => setChecked(true), [pathname]);
 	const showDescription = useSpring({
@@ -79,9 +81,21 @@ export default function Home() {
 				</CustomCollapse>
 				<animated.div style={{ ...showDescription }}>
 					<Description>{constants.descriptions}</Description>
-					<Button variant="outlined" fullWidth={false}>
-						Contact Me &#8690;
-					</Button>
+					<Stack direction="row" spacing={2} alignItems="center">
+						<Button
+							variant="outlined"
+							fullWidth={false}
+							onMouseEnter={() => setShowContact(true)}
+						>
+							Contact Me &#8690;
+						</Button>
+						{showContact && (
+							<ContactComponent
+								open={showContact}
+								onMouseLeave={() => setShowContact(false)}
+							/>
+						)}
+					</Stack>
 				</animated.div>
 			</Stack>
 		</Stack>
