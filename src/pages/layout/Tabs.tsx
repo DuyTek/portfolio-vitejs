@@ -9,7 +9,7 @@ import {
 	useTheme,
 } from '@mui/material';
 import React from 'react';
-import { To, useNavigate } from 'react-router-dom';
+import { To, useLocation, useNavigate } from 'react-router-dom';
 
 interface LinkTabProps extends TabProps {
 	to: To;
@@ -53,19 +53,39 @@ function a11yProps(index: number) {
 	};
 }
 
+const TABS = [
+	{ to: '/', label: 'Home' },
+	{ to: '/experience', label: 'Experience' },
+	{ to: '/projects', label: 'Projects' },
+	{ to: '/skills', label: 'Skills' },
+];
+
 const Tabs = () => {
 	const theme = useTheme();
-	const [value, setValue] = React.useState(0);
+	const { pathname } = useLocation();
+	const [value, setValue] = React.useState(
+		TABS.findIndex((tab) => tab.to === pathname)
+	);
 
 	const handleChange = (_: React.SyntheticEvent, newValue: number) => {
 		setValue(newValue);
 	};
+
+	React.useEffect(() => {
+		setValue(TABS.findIndex((tab) => tab.to === pathname));
+	}, [pathname]);
+
 	return (
 		<Box sx={{ borderBottom: 1, borderColor: theme.palette.grey[800] }}>
 			<StyledTabs value={value} onChange={handleChange} aria-label="nav-tabs">
-				<StyledTab to="/" label="Home" {...a11yProps(0)} />
-				<StyledTab to="/experience" label="Experience" {...a11yProps(1)} />
-				<StyledTab to="/projects" label="Projects" {...a11yProps(2)} />
+				{TABS.map((tab, index) => (
+					<StyledTab
+						key={tab.to}
+						to={tab.to}
+						label={tab.label}
+						{...a11yProps(index)}
+					/>
+				))}
 			</StyledTabs>
 		</Box>
 	);

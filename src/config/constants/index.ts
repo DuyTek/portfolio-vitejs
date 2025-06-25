@@ -1,6 +1,6 @@
 export const constants = {
-	fullName: 'Edward Nguyen',
-	title: 'Full-Stack Developer | Software Engineer',
+	fullName: 'Duy Nguyen',
+	title: 'Software Developer',
 	descriptions:
-		"Thank you for visiting my portfolio.\nYour interest in my work is greatly appreciated.\nLet's explore the journey of my career together!",
+		"I'm a dedicated Software Developer at a multi-national corp pursuing a career as a Developer, and I would value any discussions that could help improve my background.",
 };
