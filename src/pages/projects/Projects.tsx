@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { useState } from 'react';
+import SEO from '../../components/SEO';
 
 const projects = [
 	{
@@ -225,17 +226,24 @@ function ProjectCard({ project }: ProjectCardProps) {
 
 export default function Projects() {
 	return (
-		<Box>
-			<Typography variant="h4" gutterBottom>
-				Projects
-			</Typography>
-			<Grid container spacing={4}>
-				{projects.map((project, index) => (
-					<Grid size={{ xs: 12, md: 6 }} key={index}>
-						<ProjectCard project={project} />
-					</Grid>
-				))}
-			</Grid>
-		</Box>
+		<>
+			<SEO
+				title="Projects"
+				description="Explore Duy Nguyen's software development projects including PowerAI, Furni Finders, and APLY. React, TypeScript, Java, and full-stack development projects."
+				keywords="Duy Nguyen Projects, PowerAI, Software Projects, React Projects, TypeScript, Java Projects, Full-stack Development, Portfolio Projects"
+			/>
+			<Box>
+				<Typography variant="h4" gutterBottom>
+					Projects
+				</Typography>
+				<Grid container spacing={4}>
+					{projects.map((project, index) => (
+						<Grid size={{ xs: 12, md: 6 }} key={index}>
+							<ProjectCard project={project} />
+						</Grid>
+					))}
+				</Grid>
+			</Box>
+		</>
 	);
 }

@@ -8,6 +8,7 @@ import {
 	TimelineOppositeContent,
 } from '@mui/lab';
 import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
+import SEO from '../../components/SEO';
 
 const experiences = [
 	{
@@ -34,60 +35,67 @@ export default function Experience() {
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
 	return (
-		<Box>
-			<Typography variant="h4" gutterBottom>
-				Work Experience
-			</Typography>
-			<Timeline
-				position={isMobile ? 'right' : 'alternate'}
-				sx={{
-					[`& .MuiTimelineItem-root`]: {
-						'&:before': {
-							display: { xs: 'none', sm: 'block' },
+		<>
+			<SEO
+				title="Experience"
+				description="Duy Nguyen's professional work experience as a Software Engineer at Katalon. Expertise in development, testing automation, and cross-functional collaboration."
+				keywords="Duy Nguyen Experience, Software Engineer, Katalon, Work Experience, Testing Automation, Development, Professional Background"
+			/>
+			<Box>
+				<Typography variant="h4" gutterBottom>
+					Work Experience
+				</Typography>
+				<Timeline
+					position={isMobile ? 'right' : 'alternate'}
+					sx={{
+						[`& .MuiTimelineItem-root`]: {
+							'&:before': {
+								display: { xs: 'none', sm: 'block' },
+							},
 						},
-					},
-				}}
-			>
-				{experiences.map((exp, index) => (
-					<TimelineItem key={index}>
-						{!isMobile && (
-							<TimelineOppositeContent
-								sx={{ m: 'auto 0' }}
-								align="right"
-								variant="body2"
-								color="text.secondary"
-							>
-								{exp.duration}
-							</TimelineOppositeContent>
-						)}
-						<TimelineSeparator>
-							<TimelineConnector />
-							<TimelineDot color="primary" />
-							<TimelineConnector />
-						</TimelineSeparator>
-						<TimelineContent sx={{ py: '12px', px: 2 }}>
-							<Typography variant="h6" component="span">
-								{exp.title}
-							</Typography>
-							<Typography>{exp.company}</Typography>
-							{isMobile && (
-								<Typography
+					}}
+				>
+					{experiences.map((exp, index) => (
+						<TimelineItem key={index}>
+							{!isMobile && (
+								<TimelineOppositeContent
+									sx={{ m: 'auto 0' }}
+									align="right"
 									variant="body2"
 									color="text.secondary"
-									sx={{ mb: 1 }}
 								>
 									{exp.duration}
-								</Typography>
+								</TimelineOppositeContent>
 							)}
-							{exp.description.map((desc, i) => (
-								<Typography key={i} variant="body2">
-									- {desc}
+							<TimelineSeparator>
+								<TimelineConnector />
+								<TimelineDot color="primary" />
+								<TimelineConnector />
+							</TimelineSeparator>
+							<TimelineContent sx={{ py: '12px', px: 2 }}>
+								<Typography variant="h6" component="span">
+									{exp.title}
 								</Typography>
-							))}
-						</TimelineContent>
-					</TimelineItem>
-				))}
-			</Timeline>
-		</Box>
+								<Typography>{exp.company}</Typography>
+								{isMobile && (
+									<Typography
+										variant="body2"
+										color="text.secondary"
+										sx={{ mb: 1 }}
+									>
+										{exp.duration}
+									</Typography>
+								)}
+								{exp.description.map((desc, i) => (
+									<Typography key={i} variant="body2">
+										- {desc}
+									</Typography>
+								))}
+							</TimelineContent>
+						</TimelineItem>
+					))}
+				</Timeline>
+			</Box>
+		</>
 	);
 }

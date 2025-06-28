@@ -12,6 +12,7 @@ import { useLocation } from 'react-router-dom';
 import { useSpring, animated } from '@react-spring/web';
 import { constants } from '../../config/constants';
 import ContactComponent from './Contacts';
+import SEO from '../../components/SEO';
 
 const CustomCollapse = ({ children, ...props }: CollapseProps) => (
 	<Collapse
@@ -88,53 +89,60 @@ export default function Home() {
 	});
 
 	return (
-		<Stack direction="row">
-			<Stack
-				direction="column"
-				spacing={{ xs: 5, sm: 8, md: 10 }}
-				height="100%"
-			>
-				<CustomCollapse in={checked}>
-					<Stack
-						sx={{
-							minWidth: { xs: 'auto', sm: 400, md: 600 },
-							justifyContent: 'space-between',
-							width: '100%',
-						}}
-					>
-						<Box>
-							<Name>{constants.fullName.toUpperCase()}</Name>
-							<Title>{constants.title}</Title>
-						</Box>
-					</Stack>
-				</CustomCollapse>
-				<animated.div style={{ ...showDescription }}>
-					<Description>{constants.descriptions}</Description>
-					<Stack
-						direction={{ xs: 'column', sm: 'row' }}
-						spacing={2}
-						alignItems={{ xs: 'stretch', sm: 'center' }}
-						sx={{ mt: 2 }}
-					>
-						<Button
-							variant="outlined"
-							onMouseEnter={() => setShowContact(true)}
+		<>
+			<SEO
+				title="Home"
+				description={`${constants.fullName} - ${constants.title}. ${constants.descriptions}`}
+				keywords="Duy Nguyen, Software Developer, Portfolio, React, TypeScript, Java, Home"
+			/>
+			<Stack direction="row">
+				<Stack
+					direction="column"
+					spacing={{ xs: 5, sm: 8, md: 10 }}
+					height="100%"
+				>
+					<CustomCollapse in={checked}>
+						<Stack
 							sx={{
-								minHeight: { xs: 48, sm: 'auto' }, // Better touch target on mobile
-								width: { xs: '100%', sm: 'auto' }, // Full width on mobile
+								minWidth: { xs: 'auto', sm: 400, md: 600 },
+								justifyContent: 'space-between',
+								width: '100%',
 							}}
 						>
-							Contact Me &#8690;
-						</Button>
-						{showContact && (
-							<ContactComponent
-								open={showContact}
-								onMouseLeave={() => setShowContact(false)}
-							/>
-						)}
-					</Stack>
-				</animated.div>
+							<Box>
+								<Name>{constants.fullName.toUpperCase()}</Name>
+								<Title>{constants.title}</Title>
+							</Box>
+						</Stack>
+					</CustomCollapse>
+					<animated.div style={{ ...showDescription }}>
+						<Description>{constants.descriptions}</Description>
+						<Stack
+							direction={{ xs: 'column', sm: 'row' }}
+							spacing={2}
+							alignItems={{ xs: 'stretch', sm: 'center' }}
+							sx={{ mt: 2 }}
+						>
+							<Button
+								variant="outlined"
+								onMouseEnter={() => setShowContact(true)}
+								sx={{
+									minHeight: { xs: 48, sm: 'auto' }, // Better touch target on mobile
+									width: { xs: '100%', sm: 'auto' }, // Full width on mobile
+								}}
+							>
+								Contact Me &#8690;
+							</Button>
+							{showContact && (
+								<ContactComponent
+									open={showContact}
+									onMouseLeave={() => setShowContact(false)}
+								/>
+							)}
+						</Stack>
+					</animated.div>
+				</Stack>
 			</Stack>
-		</Stack>
+		</>
 	);
 }

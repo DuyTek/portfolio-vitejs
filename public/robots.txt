@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://vduydev.vercel.com/sitemap.xml
+
+# Disallow crawling of development files
+Disallow: /src/
+Disallow: /*.ts
+Disallow: /*.tsx
+Disallow: /node_modules/
