@@ -15,18 +15,18 @@ const experiences = [
 		title: 'Software Engineer',
 		company: 'Katalon',
 		duration: 'January 2024 - Present', //
+		description: [],
+	},
+	{
+		title: 'Software Engineer Intern',
+		company: 'Katalon',
+		duration: 'July 2023 - January 2024 (7 months)', //
 		description: [
 			'Develop queryable components which improves testing effort and accuracy',
 			'Produce clean code and fast booking process, enhancing user experience and performance on different browsers',
 			'Build autonomous workflows and CronJobs: code quality checking and task schedulers',
 			'Collaborate with members and cross-functional teams in Agile approach',
 		],
-	},
-	{
-		title: 'Software Engineer Intern',
-		company: 'Katalon',
-		duration: 'July 2023 - January 2024 (7 months)', //
-		description: [],
 	},
 ];
 
@@ -46,7 +46,7 @@ export default function Experience() {
 					Work Experience
 				</Typography>
 				<Timeline
-					position={isMobile ? 'right' : 'alternate'}
+					position={'right'}
 					sx={{
 						[`& .MuiTimelineItem-root`]: {
 							'&:before': {
