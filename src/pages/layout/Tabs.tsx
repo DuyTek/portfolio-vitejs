@@ -21,6 +21,12 @@ const StyledTabs = styled(MuiTabs)(({ theme }) => ({
 		bottom: '30px',
 		backgroundColor: theme.palette.primary.dark,
 	},
+	[theme.breakpoints.down('sm')]: {
+		minHeight: theme.spacing(3.5),
+		[`& .${tabsClasses.indicator}`]: {
+			bottom: '20px',
+		},
+	},
 }));
 
 const StyledTab = styled(({ to, ...others }: LinkTabProps) => {
@@ -34,6 +40,8 @@ const StyledTab = styled(({ to, ...others }: LinkTabProps) => {
 	padding: theme.spacing(0.5, 1.5),
 	minHeight: theme.spacing(4),
 	textTransform: 'none',
+	minWidth: 'auto',
+	flexGrow: 1,
 	[`&.${tabClasses.selected}`]: {
 		boxShadow: theme.shadows[10],
 		color: theme.palette.primary.main,
@@ -43,6 +51,15 @@ const StyledTab = styled(({ to, ...others }: LinkTabProps) => {
 	},
 	'&:hover': {
 		color: theme.palette.primary.light,
+	},
+	[theme.breakpoints.down('sm')]: {
+		padding: theme.spacing(0.5, 1),
+		minHeight: theme.spacing(3.5),
+		fontSize: '0.875rem',
+	},
+	[theme.breakpoints.down('xs')]: {
+		padding: theme.spacing(0.5, 0.75),
+		fontSize: '0.75rem',
 	},
 }));
 
@@ -54,10 +71,10 @@ function a11yProps(index: number) {
 }
 
 const TABS = [
-	{ to: '/', label: 'Home' },
-	{ to: '/experience', label: 'Experience' },
-	{ to: '/projects', label: 'Projects' },
-	{ to: '/skills', label: 'Skills' },
+	{ to: '/', label: 'HOME' },
+	{ to: '/experience', label: 'EXPERIENCE' },
+	{ to: '/projects', label: 'PROJECTS' },
+	{ to: '/skills', label: 'SKILLS' },
 ];
 
 const Tabs = () => {
@@ -76,8 +93,20 @@ const Tabs = () => {
 	}, [pathname]);
 
 	return (
-		<Box sx={{ borderBottom: 1, borderColor: theme.palette.grey[800] }}>
-			<StyledTabs value={value} onChange={handleChange} aria-label="nav-tabs">
+		<Box>
+			<StyledTabs
+				value={value}
+				onChange={handleChange}
+				aria-label="nav-tabs"
+				variant="scrollable"
+				scrollButtons="auto"
+				allowScrollButtonsMobile
+				sx={{
+					[theme.breakpoints.up('sm')]: {
+						variant: 'standard',
+					},
+				}}
+			>
 				{TABS.map((tab, index) => (
 					<StyledTab
 						key={tab.to}

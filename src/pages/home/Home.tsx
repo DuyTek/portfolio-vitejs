@@ -31,6 +31,12 @@ const Name = styled(Typography)(({ theme }) => ({
 	...theme.typography.h1,
 	fontWeight: theme.typography.fontWeightBold,
 	color: theme.palette.secondary.main,
+	[theme.breakpoints.down('md')]: {
+		...theme.typography.h2,
+	},
+	[theme.breakpoints.down('sm')]: {
+		...theme.typography.h3,
+	},
 }));
 
 const Description = styled(Typography)(({ theme }) => ({
@@ -39,12 +45,25 @@ const Description = styled(Typography)(({ theme }) => ({
 	width: '100%',
 	...theme.typography.body2,
 	lineHeight: 2,
+	[theme.breakpoints.down('md')]: {
+		maxWidth: 500,
+		...theme.typography.body1,
+	},
+	[theme.breakpoints.down('sm')]: {
+		maxWidth: '100%',
+		margin: theme.spacing(1.5, 0),
+		lineHeight: 1.8,
+	},
 }));
 
 const Title = styled(Typography)(({ theme }) => ({
 	...theme.typography.h6,
 	fontWeight: theme.typography.fontWeightLight,
 	letterSpacing: 1,
+	[theme.breakpoints.down('sm')]: {
+		...theme.typography.subtitle1,
+		letterSpacing: 0.5,
+	},
 }));
 
 export default function Home() {
@@ -70,9 +89,19 @@ export default function Home() {
 
 	return (
 		<Stack direction="row">
-			<Stack direction="column" spacing={10} height="100%">
+			<Stack
+				direction="column"
+				spacing={{ xs: 5, sm: 8, md: 10 }}
+				height="100%"
+			>
 				<CustomCollapse in={checked}>
-					<Stack sx={{ minWidth: 600, justifyContent: 'space-between' }}>
+					<Stack
+						sx={{
+							minWidth: { xs: 'auto', sm: 400, md: 600 },
+							justifyContent: 'space-between',
+							width: '100%',
+						}}
+					>
 						<Box>
 							<Name>{constants.fullName.toUpperCase()}</Name>
 							<Title>{constants.title}</Title>
@@ -81,11 +110,19 @@ export default function Home() {
 				</CustomCollapse>
 				<animated.div style={{ ...showDescription }}>
 					<Description>{constants.descriptions}</Description>
-					<Stack direction="row" spacing={2} alignItems="center">
+					<Stack
+						direction={{ xs: 'column', sm: 'row' }}
+						spacing={2}
+						alignItems={{ xs: 'stretch', sm: 'center' }}
+						sx={{ mt: 2 }}
+					>
 						<Button
 							variant="outlined"
-							fullWidth={false}
 							onMouseEnter={() => setShowContact(true)}
+							sx={{
+								minHeight: { xs: 48, sm: 'auto' }, // Better touch target on mobile
+								width: { xs: '100%', sm: 'auto' }, // Full width on mobile
+							}}
 						>
 							Contact Me &#8690;
 						</Button>

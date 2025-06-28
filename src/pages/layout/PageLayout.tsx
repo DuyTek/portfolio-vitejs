@@ -8,7 +8,10 @@ const AppContainer = styled('div')(({ theme }) => ({
 	width: '100vw',
 	height: '100vh',
 	flexDirection: 'column',
-	padding: theme.spacing(9, 9, 0, 9),
+	padding: theme.spacing(1, 1, 0, 1),
+	[theme.breakpoints.down('sm')]: {
+		padding: theme.spacing(0.5, 0.5, 0, 0.5),
+	},
 }));
 
 const Outer = styled('div')(({ theme }) => ({
@@ -20,21 +23,52 @@ const Outer = styled('div')(({ theme }) => ({
 	width: '100%',
 	flexGrow: 1,
 	flexShrink: 0,
+	overflow: 'hidden', // Changed to hidden to prevent outer scroll
+	[theme.breakpoints.down('sm')]: {
+		overflow: 'hidden',
+		WebkitOverflowScrolling: 'touch', // Smooth scrolling on iOS
+	},
+}));
+
+const TabsContainer = styled('div')(({ theme }) => ({
+	position: 'sticky',
+	top: 0,
+	zIndex: theme.zIndex.appBar,
+	backgroundColor: theme.palette.background.default,
+	borderBottom: `1px solid ${theme.palette.grey[800]}`,
+}));
+
+const ContentContainer = styled('div')(() => ({
+	flex: 1,
 	overflow: 'auto',
+	WebkitOverflowScrolling: 'touch',
 }));
 
 const Inner = styled('div')(({ theme }) => ({
 	padding: theme.spacing(3, 7),
+	[theme.breakpoints.down('md')]: {
+		padding: theme.spacing(2, 3),
+	},
+	[theme.breakpoints.down('sm')]: {
+		padding: theme.spacing(1.5, 2),
+	},
+	[theme.breakpoints.down('xs')]: {
+		padding: theme.spacing(1, 1.5),
+	},
 }));
 
 export default function PageLayout() {
 	return (
 		<AppContainer>
 			<Outer>
-				<Tabs />
-				<Inner>
-					<Outlet />
-				</Inner>
+				<TabsContainer>
+					<Tabs />
+				</TabsContainer>
+				<ContentContainer className="custom-scrollbar">
+					<Inner>
+						<Outlet />
+					</Inner>
+				</ContentContainer>
 			</Outer>
 		</AppContainer>
 	);

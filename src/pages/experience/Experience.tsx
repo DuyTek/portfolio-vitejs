@@ -7,7 +7,7 @@ import {
 	TimelineDot,
 	TimelineOppositeContent,
 } from '@mui/lab';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
 
 const experiences = [
 	{
@@ -30,22 +30,36 @@ const experiences = [
 ];
 
 export default function Experience() {
+	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
 	return (
 		<Box>
 			<Typography variant="h4" gutterBottom>
 				Work Experience
 			</Typography>
-			<Timeline position="alternate">
+			<Timeline
+				position={isMobile ? 'right' : 'alternate'}
+				sx={{
+					[`& .MuiTimelineItem-root`]: {
+						'&:before': {
+							display: { xs: 'none', sm: 'block' },
+						},
+					},
+				}}
+			>
 				{experiences.map((exp, index) => (
 					<TimelineItem key={index}>
-						<TimelineOppositeContent
-							sx={{ m: 'auto 0' }}
-							align="right"
-							variant="body2"
-							color="text.secondary"
-						>
-							{exp.duration}
-						</TimelineOppositeContent>
+						{!isMobile && (
+							<TimelineOppositeContent
+								sx={{ m: 'auto 0' }}
+								align="right"
+								variant="body2"
+								color="text.secondary"
+							>
+								{exp.duration}
+							</TimelineOppositeContent>
+						)}
 						<TimelineSeparator>
 							<TimelineConnector />
 							<TimelineDot color="primary" />
@@ -56,6 +70,15 @@ export default function Experience() {
 								{exp.title}
 							</Typography>
 							<Typography>{exp.company}</Typography>
+							{isMobile && (
+								<Typography
+									variant="body2"
+									color="text.secondary"
+									sx={{ mb: 1 }}
+								>
+									{exp.duration}
+								</Typography>
+							)}
 							{exp.description.map((desc, i) => (
 								<Typography key={i} variant="body2">
 									- {desc}

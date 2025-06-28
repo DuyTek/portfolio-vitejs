@@ -8,7 +8,12 @@ import {
 	Chip,
 	Stack,
 	Link,
+	IconButton,
+	Collapse,
+	useTheme,
 } from '@mui/material';
+import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
+import { useState } from 'react';
 
 const projects = [
 	{
@@ -80,6 +85,144 @@ const projects = [
 	},
 ];
 
+interface ProjectCardProps {
+	project: (typeof projects)[0];
+}
+
+function ProjectCard({ project }: ProjectCardProps) {
+	const [expanded, setExpanded] = useState(false);
+	const theme = useTheme();
+
+	const handleExpandClick = () => {
+		setExpanded(!expanded);
+	};
+
+	return (
+		<Card>
+			<CardHeader
+				title={
+					project.sourceLink ? (
+						<Link
+							href={project.sourceLink}
+							target="_blank"
+							rel="noopener noreferrer"
+							underline="hover"
+						>
+							{project.title}
+						</Link>
+					) : (
+						project.title
+					)
+				}
+				subheader={project.role}
+				action={
+					<IconButton
+						onClick={handleExpandClick}
+						aria-expanded={expanded}
+						aria-label="show more"
+						sx={{
+							transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+							transition: theme.transitions.create('transform', {
+								duration: theme.transitions.duration.shortest,
+							}),
+							color: 'white',
+						}}
+					>
+						<ExpandMoreIcon />
+					</IconButton>
+				}
+			/>
+			<CardContent>
+				<Typography variant="body2" color="text.secondary" gutterBottom>
+					{project.description}
+				</Typography>
+
+				<Collapse in={expanded} timeout="auto" unmountOnExit>
+					<Box sx={{ my: 2 }}>
+						<Typography
+							variant="subtitle1"
+							gutterBottom
+							sx={{
+								fontWeight: 'bold',
+								color: 'primary',
+								fontSize: { xs: '0.875rem', sm: '1rem' },
+							}}
+						>
+							Tasks
+						</Typography>
+						{project.tasks.map((task, i) => (
+							<Typography
+								key={i}
+								variant="body2"
+								sx={{
+									fontSize: { xs: '0.75rem', sm: '0.875rem' },
+									lineHeight: { xs: 1.4, sm: 1.5 },
+									mb: 0.5,
+								}}
+							>
+								- {task}
+							</Typography>
+						))}
+					</Box>
+
+					<Box sx={{ my: 2 }}>
+						<Typography
+							variant="subtitle1"
+							gutterBottom
+							sx={{
+								fontWeight: 'bold',
+								fontSize: { xs: '0.875rem', sm: '1rem' },
+							}}
+						>
+							Achievements
+						</Typography>
+						<Typography
+							variant="body2"
+							sx={{
+								fontSize: { xs: '0.75rem', sm: '0.875rem' },
+								lineHeight: { xs: 1.4, sm: 1.5 },
+							}}
+						>
+							{project.achievements}
+						</Typography>
+					</Box>
+
+					<Box sx={{ mt: 4 }}>
+						<Typography
+							variant="caption"
+							color="text.secondary"
+							sx={{ fontSize: { xs: '0.7rem', sm: '0.75rem' } }}
+						>
+							Tech Stack
+						</Typography>
+						<Stack
+							direction="row"
+							spacing={1}
+							useFlexGap
+							flexWrap="wrap"
+							sx={{ mt: 1 }}
+						>
+							{project.techStack.map((tech) => (
+								<Chip
+									variant="outlined"
+									color="info"
+									size="small"
+									label={tech}
+									key={tech}
+									sx={{
+										fontSize: { xs: '0.6rem', sm: '0.75rem' },
+										height: { xs: 20, sm: 24 },
+									}}
+								/>
+							))}
+						</Stack>
+					</Box>
+				</Collapse>
+			</CardContent>
+		</Card>
+	);
+}
+
 export default function Projects() {
 	return (
 		<Box>
@@ -89,74 +232,7 @@ export default function Projects() {
 			<Grid container spacing={4}>
 				{projects.map((project, index) => (
 					<Grid size={{ xs: 12, md: 6 }} key={index}>
-						<Card>
-							<CardHeader
-								title={
-									<Link
-										href={project.sourceLink}
-										target="_blank"
-										rel="noopener noreferrer"
-										underline="hover"
-									>
-										{project.title}
-									</Link>
-								}
-								subheader={project.role}
-							/>
-							<CardContent>
-								<Typography variant="body2" color="text.secondary" gutterBottom>
-									{project.description}
-								</Typography>
-								<Box sx={{ my: 2 }}>
-									<Typography
-										variant="subtitle1"
-										gutterBottom
-										sx={{ fontWeight: 'bold', color: 'primary' }}
-									>
-										Tasks
-									</Typography>
-									{project.tasks.map((task, i) => (
-										<Typography key={i} variant="body2">
-											- {task}
-										</Typography>
-									))}
-								</Box>
-								<Box sx={{ my: 2 }}>
-									<Typography
-										variant="subtitle1"
-										gutterBottom
-										sx={{ fontWeight: 'bold' }}
-									>
-										Achievements
-									</Typography>
-									<Typography variant="body2">
-										{project.achievements}
-									</Typography>
-								</Box>
-								<Box sx={{ mt: 4 }}>
-									<Typography variant="caption" color="text.secondary">
-										Tech Stack
-									</Typography>
-									<Stack
-										direction="row"
-										spacing={1}
-										useFlexGap
-										flexWrap="wrap"
-										sx={{ mt: 1 }}
-									>
-										{project.techStack.map((tech) => (
-											<Chip
-												variant="outlined"
-												color="info"
-												size="small"
-												label={tech}
-												key={tech}
-											/>
-										))}
-									</Stack>
-								</Box>
-							</CardContent>
-						</Card>
+						<ProjectCard project={project} />
 					</Grid>
 				))}
 			</Grid>
