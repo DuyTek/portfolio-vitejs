@@ -12,7 +12,10 @@ import {
 	Collapse,
 	useTheme,
 } from '@mui/material';
-import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
+import {
+	ExpandMore as ExpandMoreIcon,
+	GitHub as GitHubIcon,
+} from '@mui/icons-material';
 import { useState } from 'react';
 import SEO from '../../components/SEO';
 
@@ -64,6 +67,7 @@ const projects = [
 			'Planning and scheduling sprints in an Agile approach',
 		],
 		achievements: 'Learn Java web token mechanisms and develop APIs.',
+		sourceLink: 'https://github.com/DuyTek/FurniFinders',
 	},
 	{
 		title: 'APLY.',
@@ -98,6 +102,16 @@ function ProjectCard({ project }: ProjectCardProps) {
 		setExpanded(!expanded);
 	};
 
+	const handleGitHubClick = () => {
+		if (project.sourceLink) {
+			window.open(
+				project.sourceLink,
+				project.sourceLink,
+				'noopener,noreferrer'
+			);
+		}
+	};
+
 	return (
 		<Card>
 			<CardHeader
@@ -117,20 +131,34 @@ function ProjectCard({ project }: ProjectCardProps) {
 				}
 				subheader={project.role}
 				action={
-					<IconButton
-						onClick={handleExpandClick}
-						aria-expanded={expanded}
-						aria-label="show more"
-						sx={{
-							transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
-							transition: theme.transitions.create('transform', {
-								duration: theme.transitions.duration.shortest,
-							}),
-							color: 'white',
-						}}
-					>
-						<ExpandMoreIcon />
-					</IconButton>
+					<Box sx={{ display: 'flex', alignItems: 'center' }}>
+						{project.sourceLink && (
+							<IconButton
+								onClick={handleGitHubClick}
+								aria-label="view source code"
+								sx={{
+									color: 'white',
+									mr: 1,
+								}}
+							>
+								<GitHubIcon />
+							</IconButton>
+						)}
+						<IconButton
+							onClick={handleExpandClick}
+							aria-expanded={expanded}
+							aria-label="show more"
+							sx={{
+								transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+								transition: theme.transitions.create('transform', {
+									duration: theme.transitions.duration.shortest,
+								}),
+								color: 'white',
+							}}
+						>
+							<ExpandMoreIcon />
+						</IconButton>
+					</Box>
 				}
 			/>
 			<CardContent>
