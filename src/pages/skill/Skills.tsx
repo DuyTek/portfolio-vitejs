@@ -5,13 +5,7 @@ import SEO from '../../components/SEO';
 
 // Combined skills data
 const allSkills = {
-	'Frameworks & Libraries': [
-		'React.js',
-		'Quarkus',
-		'Material-UI',
-		'Node.js',
-		'NextJs',
-	],
+	'Frameworks & Libraries': ['React.js', 'Quarkus', 'Node.js', 'NextJs'],
 	'Programming Languages': [
 		'Java',
 		'JavaScript',
@@ -24,12 +18,7 @@ const allSkills = {
 	'Development Tools': ['Git', 'GitHub', 'Vite', 'Webpack', 'npm'],
 	'Testing & Quality': ['Vitest', 'Jest', 'Playwright', 'ESLint', 'Prettier'],
 	'Cloud & DevOps': ['GitHub Actions', 'CI/CD'],
-	Communication: [
-		'Technical Writing',
-		'Documentation',
-		'Presentation',
-		'Cross-team Collaboration',
-	],
+	Communication: ['Documentation', 'Presentation', 'Cross-team Collaboration'],
 	'Project Management': ['Agile', 'Scrum'],
 	Languages: ['English (IELTS 7.0)', 'Vietnamese (Native)'],
 	'Design & Tools': [
@@ -38,12 +27,7 @@ const allSkills = {
 		'Responsive Design',
 		'Accessibility',
 	],
-	'Office & Productivity': [
-		'Google Workspace',
-		'Microsoft Office',
-		'Notion',
-		'Slack',
-	],
+	'Office & Productivity': ['Google Workspace', 'Microsoft Office', 'Slack'],
 };
 
 // Two-column Liquid Glass Skills Container with gradient blend
