@@ -122,7 +122,7 @@ export default function ScrollPortfolio() {
 
 			const containerTop = container.scrollTop;
 			const containerHeight = container.clientHeight;
-			const threshold = containerHeight * 0.3; // 30% threshold
+			const threshold = containerHeight * 1; // 100% threshold
 
 			let newActiveSection = activeSection;
 
