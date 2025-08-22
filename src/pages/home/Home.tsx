@@ -1,8 +1,7 @@
 import { Box, Button, Stack, styled, Typography, Paper } from '@mui/material';
-import { useState } from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import { constants } from '../../config/constants';
-import ContactComponent from './Contacts';
+import ContactSpeedDial from './Contacts';
 import SEO from '../../components/SEO';
 
 // Glass Hero Container
@@ -95,8 +94,6 @@ const Description = styled(Typography)(({ theme }) => ({
 }));
 
 export default function Home() {
-	const [showContact, setShowContact] = useState(false);
-
 	const heroAnimation = useSpring({
 		from: {
 			opacity: 0,
@@ -181,39 +178,13 @@ export default function Home() {
 								>
 									View Projects
 								</Button>
-								<Button
-									variant="outlined"
-									size="large"
-									onMouseEnter={() => setShowContact(true)}
-									onMouseLeave={() => setShowContact(false)}
-									sx={{
-										minWidth: { xs: '220px', sm: '180px' },
-										minHeight: { xs: 52, sm: 48 },
-									}}
-								>
-									Contact Me
-								</Button>
 							</Stack>
-
-							{showContact && (
-								<Box
-									sx={{
-										mt: 3,
-										display: 'flex',
-										justifyContent: 'center',
-										width: '100%',
-									}}
-								>
-									<ContactComponent
-										open={showContact}
-										onMouseLeave={() => setShowContact(false)}
-									/>
-								</Box>
-							)}
 						</animated.div>
 					</HeroContainer>
 				</animated.div>
 			</Box>
+
+			<ContactSpeedDial />
 		</>
 	);
 }
