@@ -17,14 +17,19 @@ interface LinkTabProps extends TabProps {
 
 const StyledTabs = styled(MuiTabs)(({ theme }) => ({
 	minHeight: theme.spacing(4),
+	background: 'transparent',
 	[`& .${tabsClasses.indicator}`]: {
-		bottom: '30px',
-		backgroundColor: theme.palette.primary.dark,
+		bottom: '8px',
+		height: '3px',
+		borderRadius: '2px',
+		backgroundColor: theme.palette.primary.main,
+		boxShadow: `0 0 8px ${theme.palette.primary.main}`,
 	},
 	[theme.breakpoints.down('sm')]: {
 		minHeight: theme.spacing(3.5),
 		[`& .${tabsClasses.indicator}`]: {
-			bottom: '20px',
+			bottom: '6px',
+			height: '2px',
 		},
 	},
 }));
@@ -37,29 +42,41 @@ const StyledTab = styled(({ to, ...others }: LinkTabProps) => {
 	};
 	return <Tab onClick={handleNavigate} disableRipple {...others} />;
 })(({ theme }) => ({
-	padding: theme.spacing(0.5, 1.5),
+	padding: theme.spacing(1, 2),
 	minHeight: theme.spacing(4),
 	textTransform: 'none',
 	minWidth: 'auto',
 	flexGrow: 1,
+	fontWeight: 500,
+	fontSize: '0.875rem',
+	letterSpacing: '0.025em',
+	color: theme.palette.text.secondary,
+	background: 'transparent',
+	border: 'none',
+	borderRadius: '8px',
+	margin: theme.spacing(0.5, 0.25),
+	transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
 	[`&.${tabClasses.selected}`]: {
-		boxShadow: theme.shadows[10],
+		background: 'var(--glass-subtle)',
+		backdropFilter: 'blur(8px)',
+		WebkitBackdropFilter: 'blur(8px)',
+		border: '1px solid var(--glass-border-subtle)',
 		color: theme.palette.primary.main,
+		fontWeight: 600,
 		'&:hover': {
 			color: theme.palette.primary.main,
+			background: 'var(--glass-primary)',
 		},
 	},
 	'&:hover': {
-		color: theme.palette.primary.light,
+		color: theme.palette.primary.main,
+		background: 'var(--glass-minimal)',
 	},
 	[theme.breakpoints.down('sm')]: {
-		padding: theme.spacing(0.5, 1),
+		padding: theme.spacing(0.75, 1.5),
 		minHeight: theme.spacing(3.5),
-		fontSize: '0.875rem',
-	},
-	[theme.breakpoints.down('xs')]: {
-		padding: theme.spacing(0.5, 0.75),
 		fontSize: '0.75rem',
+		margin: theme.spacing(0.25, 0.125),
 	},
 }));
 

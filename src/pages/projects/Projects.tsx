@@ -7,7 +7,6 @@ import {
 	CardHeader,
 	Chip,
 	Stack,
-	Link,
 	IconButton,
 	Collapse,
 	useTheme,
@@ -113,94 +112,197 @@ function ProjectCard({ project }: ProjectCardProps) {
 	};
 
 	return (
-		<Card>
+		<Card
+			elevation={0}
+			sx={{
+				background: 'var(--glass-background)',
+				backdropFilter: 'var(--glass-backdrop)',
+				border: 'var(--glass-border)',
+				borderRadius: 'var(--glass-border-radius)',
+				transition: 'all var(--transition-standard)',
+				'&:hover': {
+					transform: 'translateY(-2px)',
+					boxShadow: 'var(--glass-shadow-elevated)',
+				},
+				height: '100%',
+				display: 'flex',
+				flexDirection: 'column',
+			}}
+		>
 			<CardHeader
 				title={
-					project.sourceLink ? (
-						<Link
-							href={project.sourceLink}
-							target="_blank"
-							rel="noopener noreferrer"
-							underline="hover"
-						>
-							{project.title}
-						</Link>
-					) : (
-						project.title
-					)
+					<Typography
+						variant="h6"
+						sx={{
+							fontSize: { xs: '1rem', sm: '1.1rem' },
+							fontWeight: 600,
+							lineHeight: 1.3,
+							color: 'primary.main',
+						}}
+					>
+						{project.title}
+					</Typography>
 				}
-				subheader={project.role}
+				subheader={
+					<Typography
+						variant="body2"
+						sx={{
+							fontSize: { xs: '0.8rem', sm: '0.875rem' },
+							color: 'text.secondary',
+							fontWeight: 500,
+						}}
+					>
+						{project.role}
+					</Typography>
+				}
 				action={
 					<Box sx={{ display: 'flex', alignItems: 'center' }}>
 						{project.sourceLink && (
 							<IconButton
 								onClick={handleGitHubClick}
 								aria-label="view source code"
+								size="small"
 								sx={{
-									color: 'white',
-									mr: 1,
+									color: 'text.primary',
+									mr: 0.5,
+									'&:hover': {
+										color: 'primary.main',
+									},
 								}}
 							>
-								<GitHubIcon />
+								<GitHubIcon fontSize="small" />
 							</IconButton>
 						)}
 						<IconButton
 							onClick={handleExpandClick}
 							aria-expanded={expanded}
 							aria-label="show more"
+							size="small"
 							sx={{
 								transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
 								transition: theme.transitions.create('transform', {
 									duration: theme.transitions.duration.shortest,
 								}),
-								color: 'white',
+								color: 'text.primary',
+								'&:hover': {
+									color: 'primary.main',
+								},
 							}}
 						>
-							<ExpandMoreIcon />
+							<ExpandMoreIcon fontSize="small" />
 						</IconButton>
 					</Box>
 				}
+				sx={{
+					pb: 1,
+					'& .MuiCardHeader-content': {
+						minWidth: 0,
+					},
+				}}
 			/>
-			<CardContent>
-				<Typography variant="body2" color="text.secondary" gutterBottom>
+			<CardContent sx={{ flex: 1, pt: 0 }}>
+				<Typography
+					variant="body2"
+					color="text.secondary"
+					sx={{
+						fontSize: { xs: '0.8rem', sm: '0.875rem' },
+						lineHeight: 1.4,
+						mb: 1.5,
+						display: '-webkit-box',
+						WebkitLineClamp: expanded ? 'none' : 3,
+						WebkitBoxOrient: 'vertical',
+						overflow: 'hidden',
+					}}
+				>
 					{project.description}
 				</Typography>
 
+				{/* Always show a preview of tech stack */}
+				<Box sx={{ mb: expanded ? 2 : 0 }}>
+					<Stack direction="row" spacing={0.5} useFlexGap flexWrap="wrap">
+						{project.techStack
+							.slice(0, expanded ? project.techStack.length : 4)
+							.map((tech) => (
+								<Chip
+									variant="outlined"
+									color="primary"
+									size="small"
+									label={tech}
+									key={tech}
+									sx={{
+										fontSize: { xs: '0.65rem', sm: '0.7rem' },
+										height: { xs: 18, sm: 20 },
+										'& .MuiChip-label': {
+											px: 0.75,
+										},
+									}}
+								/>
+							))}
+						{!expanded && project.techStack.length > 4 && (
+							<Chip
+								variant="outlined"
+								size="small"
+								label={`+${project.techStack.length - 4}`}
+								sx={{
+									fontSize: { xs: '0.65rem', sm: '0.7rem' },
+									height: { xs: 18, sm: 20 },
+									'& .MuiChip-label': {
+										px: 0.75,
+									},
+									opacity: 0.7,
+								}}
+							/>
+						)}
+					</Stack>
+				</Box>
+
 				<Collapse in={expanded} timeout="auto" unmountOnExit>
-					<Box sx={{ my: 2 }}>
+					<Box sx={{ mt: 2 }}>
 						<Typography
-							variant="subtitle1"
+							variant="subtitle2"
 							gutterBottom
 							sx={{
-								fontWeight: 'bold',
-								color: 'primary',
-								fontSize: { xs: '0.875rem', sm: '1rem' },
+								fontWeight: 600,
+								color: 'primary.main',
+								fontSize: { xs: '0.8rem', sm: '0.875rem' },
+								mb: 1,
 							}}
 						>
-							Tasks
+							Key Tasks
 						</Typography>
 						{project.tasks.map((task, i) => (
 							<Typography
 								key={i}
 								variant="body2"
 								sx={{
-									fontSize: { xs: '0.75rem', sm: '0.875rem' },
-									lineHeight: { xs: 1.4, sm: 1.5 },
+									fontSize: { xs: '0.75rem', sm: '0.8rem' },
+									lineHeight: 1.4,
 									mb: 0.5,
+									color: 'text.secondary',
+									pl: 1,
+									position: 'relative',
+									'&::before': {
+										content: '"•"',
+										position: 'absolute',
+										left: 0,
+										color: 'primary.main',
+									},
 								}}
 							>
-								- {task}
+								{task}
 							</Typography>
 						))}
 					</Box>
 
-					<Box sx={{ my: 2 }}>
+					<Box sx={{ mt: 2 }}>
 						<Typography
-							variant="subtitle1"
+							variant="subtitle2"
 							gutterBottom
 							sx={{
-								fontWeight: 'bold',
-								fontSize: { xs: '0.875rem', sm: '1rem' },
+								fontWeight: 600,
+								color: 'primary.main',
+								fontSize: { xs: '0.8rem', sm: '0.875rem' },
+								mb: 1,
 							}}
 						>
 							Achievements
@@ -208,43 +310,13 @@ function ProjectCard({ project }: ProjectCardProps) {
 						<Typography
 							variant="body2"
 							sx={{
-								fontSize: { xs: '0.75rem', sm: '0.875rem' },
-								lineHeight: { xs: 1.4, sm: 1.5 },
+								fontSize: { xs: '0.75rem', sm: '0.8rem' },
+								lineHeight: 1.4,
+								color: 'text.secondary',
 							}}
 						>
 							{project.achievements}
 						</Typography>
-					</Box>
-
-					<Box sx={{ mt: 4 }}>
-						<Typography
-							variant="caption"
-							color="text.secondary"
-							sx={{ fontSize: { xs: '0.7rem', sm: '0.75rem' } }}
-						>
-							Tech Stack
-						</Typography>
-						<Stack
-							direction="row"
-							spacing={1}
-							useFlexGap
-							flexWrap="wrap"
-							sx={{ mt: 1 }}
-						>
-							{project.techStack.map((tech) => (
-								<Chip
-									variant="outlined"
-									color="info"
-									size="small"
-									label={tech}
-									key={tech}
-									sx={{
-										fontSize: { xs: '0.6rem', sm: '0.75rem' },
-										height: { xs: 20, sm: 24 },
-									}}
-								/>
-							))}
-						</Stack>
 					</Box>
 				</Collapse>
 			</CardContent>
@@ -260,17 +332,56 @@ export default function Projects() {
 				description="Explore Duy Nguyen's software development projects including PowerAI, Furni Finders, and APLY. React, TypeScript, Java, and full-stack development projects."
 				keywords="Duy Nguyen Projects, PowerAI, Software Projects, React Projects, TypeScript, Java Projects, Full-stack Development, Portfolio Projects"
 			/>
-			<Box>
-				<Typography variant="h4" gutterBottom>
+			<Box
+				sx={{
+					width: '100%',
+					height: '100%',
+					display: 'flex',
+					flexDirection: 'column',
+					overflow: 'hidden',
+				}}
+			>
+				<Typography
+					variant="h4"
+					gutterBottom
+					sx={{
+						fontWeight: 600,
+						mb: { xs: 2, sm: 3 },
+						textAlign: 'center',
+						color: 'primary.main',
+					}}
+				>
 					Projects
 				</Typography>
-				<Grid container spacing={4}>
-					{projects.map((project, index) => (
-						<Grid size={{ xs: 12, md: 6 }} key={index}>
-							<ProjectCard project={project} />
-						</Grid>
-					))}
-				</Grid>
+				<Box
+					sx={{
+						flex: 1,
+						overflow: 'auto',
+						px: { xs: 1, sm: 2 },
+						'&::-webkit-scrollbar': {
+							width: '8px',
+						},
+						'&::-webkit-scrollbar-track': {
+							background: 'var(--glass-background)',
+							borderRadius: '4px',
+						},
+						'&::-webkit-scrollbar-thumb': {
+							background: 'var(--glass-border-color)',
+							borderRadius: '4px',
+							'&:hover': {
+								background: 'rgba(255, 255, 255, 0.3)',
+							},
+						},
+					}}
+				>
+					<Grid container spacing={{ xs: 2, sm: 3 }} sx={{ pb: 2 }}>
+						{projects.map((project, index) => (
+							<Grid size={{ xs: 12, sm: 6, lg: 4 }} key={index}>
+								<ProjectCard project={project} />
+							</Grid>
+						))}
+					</Grid>
+				</Box>
 			</Box>
 		</>
 	);

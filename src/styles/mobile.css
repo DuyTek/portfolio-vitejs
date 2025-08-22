@@ -1,4 +1,4 @@
-/* Mobile-specific optimizations */
+/* Mobile-specific optimizations for Liquid Glass Theme */
 
 /* Prevent horizontal scrolling */
 html,
@@ -40,10 +40,10 @@ body {
 	-webkit-overflow-scrolling: touch;
 }
 
-/* Hide scrollbars but keep functionality */
+/* Custom scrollbars for light theme */
 .custom-scrollbar {
 	scrollbar-width: thin;
-	scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+	scrollbar-color: rgba(100, 116, 139, 0.3) transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -55,10 +55,10 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-	background-color: rgba(255, 255, 255, 0.3);
+	background-color: rgba(100, 116, 139, 0.3);
 	border-radius: 3px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-	background-color: rgba(255, 255, 255, 0.5);
+	background-color: rgba(100, 116, 139, 0.5);
 }
