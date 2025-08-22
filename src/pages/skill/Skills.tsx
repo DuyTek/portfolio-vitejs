@@ -1,10 +1,17 @@
-import { Typography, Box, Chip, IconButton } from '@mui/material';
-import { ChevronLeft, ChevronRight } from '@mui/icons-material';
-import { useState, useEffect, useRef } from 'react';
+import { Typography, Box, Chip, styled } from '@mui/material';
+import { useState, useEffect } from 'react';
 import { animated, useSpring } from '@react-spring/web';
 import SEO from '../../components/SEO';
 
-const technicalSkills = {
+// Combined skills data
+const allSkills = {
+	'Frameworks & Libraries': [
+		'React.js',
+		'Quarkus',
+		'Material-UI',
+		'Node.js',
+		'NextJs',
+	],
 	'Programming Languages': [
 		'Java',
 		'JavaScript',
@@ -13,45 +20,17 @@ const technicalSkills = {
 		'HTML',
 		'CSS',
 	],
-	'Frameworks & Libraries': [
-		'React.js',
-		'Spring Boot',
-		'Material-UI',
-		'Node.js',
-		'Express.js',
-	],
 	Databases: ['PostgreSQL', 'MySQL', 'MongoDB'],
-	'Development Tools': ['Git', 'GitHub', 'Vite', 'Webpack', 'npm', 'Maven'],
-	'Testing & Quality': [
-		'Vitest',
-		'Jest',
-		'Selenium',
-		'Playwright',
-		'ESLint',
-		'Prettier',
-	],
-	'Cloud & DevOps': ['GitHub Actions', 'Docker', 'AWS', 'CI/CD'],
-};
-
-const softSkills = {
+	'Development Tools': ['Git', 'GitHub', 'Vite', 'Webpack', 'npm'],
+	'Testing & Quality': ['Vitest', 'Jest', 'Playwright', 'ESLint', 'Prettier'],
+	'Cloud & DevOps': ['GitHub Actions', 'CI/CD'],
 	Communication: [
 		'Technical Writing',
 		'Documentation',
 		'Presentation',
 		'Cross-team Collaboration',
 	],
-	'Problem Solving': [
-		'Algorithm Design',
-		'Debugging',
-		'Code Review',
-		'System Architecture',
-	],
-	'Project Management': [
-		'Agile',
-		'Scrum',
-		'Sprint Planning',
-		'Version Control',
-	],
+	'Project Management': ['Agile', 'Scrum'],
 	Languages: ['English (IELTS 7.0)', 'Vietnamese (Native)'],
 	'Design & Tools': [
 		'Figma',
@@ -67,239 +46,260 @@ const softSkills = {
 	],
 };
 
-interface CarouselProps {
-	title: string;
-	skillsData: Record<string, string[]>;
-	direction?: 'left' | 'right';
-}
+// Two-column Liquid Glass Skills Container with gradient blend
+const SkillsContainer = styled(Box)(({ theme }) => ({
+	background: 'var(--glass-primary)',
+	backdropFilter: 'blur(16px)',
+	WebkitBackdropFilter: 'blur(16px)',
+	border: '1px solid var(--glass-border)',
+	borderRadius: '20px',
+	padding: 0, // Remove padding to allow column-specific padding
+	boxShadow: `
+		0 8px 32px rgba(0, 0, 0, 0.1), 
+		0 4px 16px rgba(0, 0, 0, 0.05), 
+		inset 0 1px 0 var(--highlight-inner)
+	`,
+	transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+	width: '100%',
+	maxWidth: '1200px',
+	margin: '0 auto',
+	position: 'relative',
+	minHeight: '200px',
+	overflow: 'hidden',
+	display: 'grid',
+	gridTemplateColumns: '1fr 1fr',
+	[theme.breakpoints.down('md')]: {
+		borderRadius: '16px',
+		minHeight: '200px',
+		gridTemplateColumns: '1fr', // Stack on mobile
+	},
+	[theme.breakpoints.down('sm')]: {
+		borderRadius: '12px',
+		minHeight: '150px',
+	},
+}));
 
-function SkillCarousel({
-	title,
-	skillsData,
-	direction = 'left',
-}: CarouselProps) {
-	const [currentIndex, setCurrentIndex] = useState(0);
-	const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-	const intervalRef = useRef<number>();
+// Left column with subtle gradient
+const LeftColumn = styled(Box)(({ theme }) => ({
+	padding: theme.spacing(4),
+	background: `linear-gradient(135deg, 
+		var(--glass-subtle) 0%, 
+		var(--glass-primary) 50%, 
+		transparent 100%
+	)`,
+	backdropFilter: 'blur(12px)',
+	WebkitBackdropFilter: 'blur(12px)',
+	borderRadius: '20px 10px 10px 20px',
+	position: 'relative',
+	display: 'flex',
+	flexDirection: 'column',
+	justifyContent: 'center',
+	[theme.breakpoints.down('md')]: {
+		padding: theme.spacing(3),
+		borderRadius: '16px 16px 0 0',
+		background: `linear-gradient(180deg, 
+			var(--glass-subtle) 0%, 
+			var(--glass-primary) 50%, 
+			transparent 100%
+		)`,
+	},
+	[theme.breakpoints.down('sm')]: {
+		padding: theme.spacing(2),
+		borderRadius: '12px 12px 0 0',
+	},
+}));
 
-	const categories = Object.entries(skillsData);
-	const totalCategories = categories.length;
+// Right column with complementary gradient
+const RightColumn = styled(Box)(({ theme }) => ({
+	padding: theme.spacing(4),
+	background: `linear-gradient(225deg, 
+		var(--glass-subtle) 0%, 
+		var(--glass-primary) 50%, 
+		transparent 100%
+	)`,
+	backdropFilter: 'blur(12px)',
+	WebkitBackdropFilter: 'blur(12px)',
+	borderRadius: '10px 20px 20px 10px',
+	position: 'relative',
+	display: 'flex',
+	flexDirection: 'column',
+	justifyContent: 'center',
+	[theme.breakpoints.down('md')]: {
+		padding: theme.spacing(3),
+		borderRadius: '0 0 16px 16px',
+		background: `linear-gradient(0deg, 
+			var(--glass-subtle) 0%, 
+			var(--glass-primary) 50%, 
+			transparent 100%
+		)`,
+	},
+	[theme.breakpoints.down('sm')]: {
+		padding: theme.spacing(2),
+		borderRadius: '0 0 12px 12px',
+	},
+}));
 
-	const nextSlide = () => {
-		setCurrentIndex((prev) => (prev + 1) % totalCategories);
-	};
+// Column content wrapper
+const ColumnContent = styled(Box)({
+	position: 'relative',
+	zIndex: 1,
+});
 
-	const prevSlide = () => {
-		setCurrentIndex((prev) => (prev - 1 + totalCategories) % totalCategories);
-	};
+// Liquid Glass Chip
+const GlassChip = styled(Chip)(({ theme }) => ({
+	background: 'var(--glass-subtle)',
+	backdropFilter: 'blur(8px)',
+	WebkitBackdropFilter: 'blur(8px)',
+	border: '1px solid var(--glass-border-subtle)',
+	color: theme.palette.text.primary,
+	fontSize: '0.875rem',
+	fontWeight: 500,
+	borderRadius: '12px',
+	padding: theme.spacing(0.5, 0.5),
+	boxShadow: `
+		0 2px 8px rgba(0, 0, 0, 0.08), 
+		0 1px 4px rgba(0, 0, 0, 0.04),
+		inset 0 1px 0 var(--highlight-inner-subtle)
+	`,
+	transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+	'& .MuiChip-label': {
+		padding: theme.spacing(0, 1.5),
+		fontWeight: 500,
+	},
+	'&:hover': {
+		background: 'var(--glass-primary)',
+		borderColor: theme.palette.primary.main,
+		color: theme.palette.primary.main,
+		transform: 'translateY(-2px)',
+		boxShadow: `
+			0 4px 12px rgba(99, 179, 237, 0.2), 
+			0 2px 6px rgba(99, 179, 237, 0.1),
+			inset 0 1px 0 var(--highlight-inner)
+		`,
+	},
+	[theme.breakpoints.down('sm')]: {
+		fontSize: '0.75rem',
+		borderRadius: '10px',
+		'& .MuiChip-label': {
+			padding: theme.spacing(0, 1),
+		},
+	},
+}));
 
+// Category Title
+const CategoryTitle = styled(Typography)(({ theme }) => ({
+	fontWeight: 600,
+	color: theme.palette.primary.main,
+	marginBottom: theme.spacing(2),
+	fontSize: '1.1rem',
+	[theme.breakpoints.down('sm')]: {
+		fontSize: '1rem',
+		marginBottom: theme.spacing(1.5),
+	},
+}));
+
+export default function Skills() {
+	const skillsEntries = Object.entries(allSkills);
+	const [leftColumnIndex, setLeftColumnIndex] = useState(0);
+	const [rightColumnIndex, setRightColumnIndex] = useState(1);
+	const [isVisible, setIsVisible] = useState(true);
+
+	// Auto-cycle through skills every 5 seconds with fade effect
 	useEffect(() => {
-		if (isAutoPlaying) {
-			intervalRef.current = setInterval(() => {
-				setCurrentIndex((prev) => {
-					if (direction === 'left') {
-						return (prev + 1) % totalCategories;
-					} else {
-						return (prev - 1 + totalCategories) % totalCategories;
-					}
-				});
-			}, 4000);
-		}
+		// Function to get two different random skill sets
+		const getTwoRandomSkillSets = () => {
+			const availableIndices = [...Array(skillsEntries.length).keys()];
 
-		return () => {
-			if (intervalRef.current) {
-				clearInterval(intervalRef.current);
+			// Shuffle array
+			for (let i = availableIndices.length - 1; i > 0; i--) {
+				const j = Math.floor(Math.random() * (i + 1));
+				[availableIndices[i], availableIndices[j]] = [
+					availableIndices[j],
+					availableIndices[i],
+				];
 			}
-		};
-	}, [isAutoPlaying, direction, totalCategories]);
 
-	const slideAnimation = useSpring({
-		transform: `translateX(-${currentIndex * 100}%)`,
+			return [availableIndices[0], availableIndices[1]];
+		};
+
+		const interval = setInterval(() => {
+			// Start fade out
+			setIsVisible(false);
+
+			// After fade out completes, change content and fade in
+			setTimeout(() => {
+				const [newLeft, newRight] = getTwoRandomSkillSets();
+				setLeftColumnIndex(newLeft);
+				setRightColumnIndex(newRight);
+				setIsVisible(true);
+			}, 300);
+		}, 5000);
+
+		return () => clearInterval(interval);
+	}, [skillsEntries.length]);
+
+	// Spring animation for fade in/out
+	const fadeAnimation = useSpring({
+		opacity: isVisible ? 1 : 0,
+		transform: isVisible ? 'translateY(0px)' : 'translateY(20px)',
 		config: {
-			tension: 280,
-			friction: 60,
+			tension: 300,
+			friction: 25,
 		},
 	});
 
-	return (
-		<Box
-			sx={{
-				background: 'var(--glass-background)',
-				backdropFilter: 'var(--glass-backdrop)',
-				border: 'var(--glass-border)',
-				borderRadius: 'var(--glass-border-radius)',
-				p: { xs: 2, sm: 3 },
-				height: '100%',
-				display: 'flex',
-				flexDirection: 'column',
-				overflow: 'hidden',
-				position: 'relative',
-			}}
-			onMouseEnter={() => setIsAutoPlaying(false)}
-			onMouseLeave={() => setIsAutoPlaying(true)}
-		>
-			{/* Header */}
+	const leftSkillSet = skillsEntries[leftColumnIndex];
+	const rightSkillSet = skillsEntries[rightColumnIndex];
+
+	// Render column content
+	const renderColumn = (
+		[category, skills]: [string, string[]],
+		isLeft: boolean
+	) => (
+		<ColumnContent>
+			<CategoryTitle variant="h6" sx={{ textAlign: 'center', mb: 3 }}>
+				{category}
+			</CategoryTitle>
 			<Box
 				sx={{
 					display: 'flex',
+					flexWrap: 'wrap',
+					gap: { xs: 1, sm: 1.5 },
 					alignItems: 'center',
-					justifyContent: 'space-between',
-					mb: 2,
-				}}
-			>
-				<Typography
-					variant="h5"
-					sx={{
-						fontWeight: 600,
-						color: 'primary.main',
-						fontSize: { xs: '1.1rem', sm: '1.25rem' },
-					}}
-				>
-					{title}
-				</Typography>
-				<Box>
-					<IconButton
-						onClick={prevSlide}
-						size="small"
-						sx={{
-							color: 'text.primary',
-							'&:hover': { color: 'primary.main' },
-						}}
-					>
-						<ChevronLeft />
-					</IconButton>
-					<IconButton
-						onClick={nextSlide}
-						size="small"
-						sx={{
-							color: 'text.primary',
-							'&:hover': { color: 'primary.main' },
-						}}
-					>
-						<ChevronRight />
-					</IconButton>
-				</Box>
-			</Box>
-
-			{/* Content */}
-			<Box sx={{ flex: 1, overflow: 'hidden' }}>
-				<animated.div
-					style={{
-						...slideAnimation,
-						display: 'flex',
-						width: `${totalCategories * 100}%`,
-						height: '100%',
-					}}
-				>
-					{categories.map(([category, skills]) => (
-						<Box
-							key={category}
-							sx={{
-								width: `${100 / totalCategories}%`,
-								display: 'flex',
-								flexDirection: 'column',
-								px: 1,
-							}}
-						>
-							<Typography
-								variant="h6"
-								sx={{
-									fontWeight: 600,
-									mb: 2,
-									color: 'text.primary',
-									fontSize: { xs: '1rem', sm: '1.1rem' },
-									textAlign: 'center',
-								}}
-							>
-								{category}
-							</Typography>
-							<Box
-								sx={{
-									display: 'flex',
-									flexWrap: 'wrap',
-									gap: 1,
-									justifyContent: 'center',
-									alignItems: 'flex-start',
-									flex: 1,
-								}}
-							>
-								{skills.map((skill, skillIndex) => (
-									<Chip
-										key={skill}
-										label={skill}
-										size="small"
-										variant="outlined"
-										color="primary"
-										sx={{
-											fontSize: { xs: '0.7rem', sm: '0.75rem' },
-											height: { xs: 22, sm: 24 },
-											'& .MuiChip-label': {
-												px: 1,
-											},
-											animation: `fadeIn 0.5s ease-in-out ${
-												skillIndex * 0.1
-											}s both`,
-											'@keyframes fadeIn': {
-												from: {
-													opacity: 0,
-													transform: 'translateY(10px)',
-												},
-												to: {
-													opacity: 1,
-													transform: 'translateY(0)',
-												},
-											},
-										}}
-									/>
-								))}
-							</Box>
-						</Box>
-					))}
-				</animated.div>
-			</Box>
-
-			{/* Indicators */}
-			<Box
-				sx={{
-					display: 'flex',
 					justifyContent: 'center',
-					gap: 1,
-					mt: 2,
 				}}
 			>
-				{categories.map((_, index) => (
-					<Box
-						key={index}
-						onClick={() => setCurrentIndex(index)}
+				{skills.map((skill, index) => (
+					<GlassChip
+						key={skill}
+						label={skill}
 						sx={{
-							width: 8,
-							height: 8,
-							borderRadius: '50%',
-							background:
-								index === currentIndex
-									? 'primary.main'
-									: 'rgba(255, 255, 255, 0.3)',
-							cursor: 'pointer',
-							transition: 'all 0.3s ease',
-							'&:hover': {
-								background: 'primary.main',
-								transform: 'scale(1.2)',
+							animationDelay: `${index * 0.05 + (isLeft ? 0 : 0.2)}s`,
+							animation: isVisible ? 'fadeInUp 0.4s ease-out forwards' : 'none',
+							opacity: isVisible ? 0 : 1,
+							'@keyframes fadeInUp': {
+								from: {
+									opacity: 0,
+									transform: 'translateY(8px)',
+								},
+								to: {
+									opacity: 1,
+									transform: 'translateY(0)',
+								},
 							},
 						}}
 					/>
 				))}
 			</Box>
-		</Box>
+		</ColumnContent>
 	);
-}
 
-export default function Skills() {
 	return (
 		<>
 			<SEO
 				title="Skills"
-				description="Duy Nguyen's technical skills including Java, JavaScript, TypeScript, React.js, and more. Programming languages, frameworks, and tools expertise."
-				keywords="Duy Nguyen Skills, Java, JavaScript, TypeScript, React.js, Programming Skills, Technical Skills, Software Development"
+				description="Duy Nguyen's comprehensive skills including programming languages, frameworks, tools, and soft skills. Full-stack development expertise."
+				keywords="Duy Nguyen Skills, Programming Languages, React.js, Java, TypeScript, Full-stack Development, Technical Skills"
 			/>
 			<Box
 				sx={{
@@ -307,41 +307,38 @@ export default function Skills() {
 					height: '100%',
 					display: 'flex',
 					flexDirection: 'column',
+					alignItems: 'center',
+					justifyContent: 'center',
+					p: { xs: 2, sm: 3, md: 4 },
 				}}
 			>
 				<Typography
 					variant="h4"
 					gutterBottom
 					sx={{
-						fontWeight: 600,
-						mb: { xs: 2, sm: 3 },
+						fontWeight: 700,
+						mb: { xs: 3, sm: 4 },
 						textAlign: 'center',
 						color: 'primary.main',
+						fontSize: { xs: '1.75rem', sm: '2rem', md: '2.25rem' },
 					}}
 				>
 					Skills & Expertise
 				</Typography>
 
-				<Box
-					sx={{
-						flex: 1,
-						display: 'grid',
-						gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' },
-						gap: { xs: 2, sm: 3 },
-						overflow: 'hidden',
-					}}
-				>
-					<SkillCarousel
-						title="Technical Skills"
-						skillsData={technicalSkills}
-						direction="right"
-					/>
-					<SkillCarousel
-						title="Soft Skills"
-						skillsData={softSkills}
-						direction="left"
-					/>
-				</Box>
+				<SkillsContainer>
+					<LeftColumn>
+						<animated.div style={fadeAnimation}>
+							{leftSkillSet && renderColumn(leftSkillSet, true)}
+						</animated.div>
+					</LeftColumn>
+
+					<RightColumn>
+						<animated.div style={fadeAnimation}>
+							{rightSkillSet && renderColumn(rightSkillSet, false)}
+						</animated.div>
+					</RightColumn>
+				</SkillsContainer>
 			</Box>
 		</>
 	);

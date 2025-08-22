@@ -1,8 +1,17 @@
-import { Box, Button, Stack, styled, Typography, Paper } from '@mui/material';
+import {
+	Box,
+	Button,
+	Stack,
+	styled,
+	Typography,
+	Paper,
+	ButtonProps,
+} from '@mui/material';
 import { useSpring, animated } from '@react-spring/web';
 import { constants } from '../../config/constants';
 import ContactSpeedDial from './Contacts';
 import SEO from '../../components/SEO';
+import { Link, To } from 'react-router-dom';
 
 // Glass Hero Container
 const HeroContainer = styled(Paper)(({ theme }) => ({
@@ -93,6 +102,10 @@ const Description = styled(Typography)(({ theme }) => ({
 	},
 }));
 
+const LinkButton = styled(Button)<ButtonProps & { to: To }>({
+	textDecoration: 'none',
+});
+
 export default function Home() {
 	const heroAnimation = useSpring({
 		from: {
@@ -168,16 +181,18 @@ export default function Home() {
 								alignItems="center"
 								sx={{ mt: 4, width: '100%' }}
 							>
-								<Button
+								<LinkButton
 									variant="contained"
 									size="large"
 									sx={{
 										minWidth: { xs: '220px', sm: '180px' },
 										minHeight: { xs: 52, sm: 48 },
 									}}
+									LinkComponent={Link}
+									to="/projects"
 								>
 									View Projects
-								</Button>
+								</LinkButton>
 							</Stack>
 						</animated.div>
 					</HeroContainer>
