@@ -42,7 +42,7 @@ const Description = styled(Typography)(({ theme }) => ({
 
 const HeroContainer = styled(Paper)(({ theme }) => ({
 	alignItems: 'center',
-	background: 'var(--glass-strong)',
+	background: 'transparent',
 	WebkitBackdropFilter: 'blur(12px)',
 	backdropFilter: 'blur(12px)',
 	border: '1px solid var(--glass-border-strong)',

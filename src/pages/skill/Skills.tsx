@@ -85,11 +85,7 @@ const GlassChip = styled(Chip)(({ theme }) => ({
 
 const LeftColumn = styled(Box)(({ theme }) => ({
 	WebkitBackdropFilter: 'blur(12px)',
-	background: `linear-gradient(135deg, 
-		var(--glass-subtle) 0%, 
-		var(--glass-primary) 50%, 
-		transparent 100%
-	)`,
+	background: 'transparent',
 	backdropFilter: 'blur(12px)',
 	borderRadius: '20px 10px 10px 20px',
 	display: 'flex',
@@ -114,11 +110,7 @@ const LeftColumn = styled(Box)(({ theme }) => ({
 
 const RightColumn = styled(Box)(({ theme }) => ({
 	WebkitBackdropFilter: 'blur(12px)',
-	background: `linear-gradient(225deg, 
-		var(--glass-subtle) 0%, 
-		var(--glass-primary) 50%, 
-		transparent 100%
-	)`,
+	background: 'transparent',
 	backdropFilter: 'blur(12px)',
 	borderRadius: '10px 20px 20px 10px',
 	display: 'flex',
@@ -143,7 +135,7 @@ const RightColumn = styled(Box)(({ theme }) => ({
 
 const SkillsContainer = styled(Box)(({ theme }) => ({
 	WebkitBackdropFilter: 'blur(16px)',
-	background: 'var(--glass-primary)',
+	background: 'transparent',
 	backdropFilter: 'blur(16px)',
 	border: '1px solid var(--glass-border)',
 	borderRadius: '20px',
