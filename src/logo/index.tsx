@@ -1,6 +1,9 @@
 import { SvgIcon, styled } from '@mui/material';
 
+// Constants
 const LOGO_SQUARE_SIZE = 50;
+
+// Styled Components
 const Logo = styled(SvgIcon)(() => ({}));
 
 export const ReactLogo = () => (

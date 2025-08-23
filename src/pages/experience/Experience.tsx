@@ -8,19 +8,21 @@ import {
 	TimelineOppositeContent,
 } from '@mui/lab';
 import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
+
 import SEO from '../../components/SEO';
 
-const experiences = [
+// Constants
+const EXPERIENCES = [
 	{
 		title: 'Software Engineer',
 		company: 'Katalon',
-		duration: 'January 2024 - Present', //
+		duration: 'January 2024 - Present',
 		description: [],
 	},
 	{
 		title: 'Software Engineer Intern',
 		company: 'Katalon',
-		duration: 'July 2023 - January 2024 (7 months)', //
+		duration: 'July 2023 - January 2024 (7 months)',
 		description: [
 			'Develop queryable components which improves testing effort and accuracy',
 			'Produce clean code and fast booking process, enhancing user experience and performance on different browsers',
@@ -107,7 +109,7 @@ export default function Experience() {
 								},
 							}}
 						>
-							{experiences.map((exp, index) => (
+							{EXPERIENCES.map((exp, index) => (
 								<TimelineItem key={index}>
 									{!isMobile && (
 										<TimelineOppositeContent

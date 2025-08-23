@@ -8,84 +8,22 @@ import {
 	ButtonProps,
 } from '@mui/material';
 import { useSpring, animated } from '@react-spring/web';
-import { constants } from '../../config/constants';
-import ContactSpeedDial from './Contacts';
-import SEO from '../../components/SEO';
 import { Link, To } from 'react-router-dom';
 
-// Glass Hero Container
-const HeroContainer = styled(Paper)(({ theme }) => ({
-	padding: theme.spacing(6, 4),
-	borderRadius: '32px',
-	background: 'var(--glass-strong)',
-	backdropFilter: 'blur(12px)',
-	WebkitBackdropFilter: 'blur(12px)',
-	border: '1px solid var(--glass-border-strong)',
-	boxShadow: `0 16px 40px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 var(--highlight-inner-strong)`,
-	width: '100%',
-	maxWidth: '900px',
-	margin: '0 auto',
-	textAlign: 'center',
-	minHeight: '400px',
-	display: 'flex',
-	flexDirection: 'column',
-	justifyContent: 'center',
-	alignItems: 'center',
-	[theme.breakpoints.down('md')]: {
-		padding: theme.spacing(4, 3),
-		borderRadius: '24px',
-		minHeight: '350px',
-	},
-	[theme.breakpoints.down('sm')]: {
-		padding: theme.spacing(3, 2),
-		borderRadius: '16px',
-		minHeight: '300px',
-	},
-}));
+import { CONSTANTS } from '../../config/constants';
+import ContactSpeedDial from './Contacts';
+import SEO from '../../components/SEO';
 
-const Name = styled(Typography)(({ theme }) => ({
-	fontSize: 'clamp(2.5rem, 8vw, 5.5rem)',
-	fontWeight: 800,
-	lineHeight: 1.1,
-	letterSpacing: '-0.02em',
-	color: theme.palette.text.primary,
-	marginBottom: theme.spacing(1.5),
-	textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
-	textAlign: 'center',
-	width: '100%',
-	minHeight: '1.2em',
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-	whiteSpace: 'nowrap',
-	overflow: 'visible',
-	minWidth: 'max-content',
-}));
-
-const Title = styled(Typography)(({ theme }) => ({
-	fontSize: 'clamp(1.125rem, 3vw, 1.5rem)',
-	fontWeight: 500,
-	color: theme.palette.text.secondary,
-	marginBottom: theme.spacing(2),
-	letterSpacing: '0.01em',
-	lineHeight: 1.6,
-	textAlign: 'center',
-	width: '100%',
-	minHeight: '1.5em',
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-}));
-
+// Styled Components
 const Description = styled(Typography)(({ theme }) => ({
+	color: theme.palette.text.primary,
 	fontSize: '1.125rem',
 	fontWeight: 400,
-	lineHeight: 1.8,
 	letterSpacing: '0.005em',
-	color: theme.palette.text.primary,
+	lineHeight: 1.8,
+	margin: '0 auto',
 	marginBottom: theme.spacing(2),
 	maxWidth: '700px',
-	margin: '0 auto',
 	textAlign: 'center',
 	width: '100%',
 	[theme.breakpoints.down('md')]: {
@@ -102,9 +40,72 @@ const Description = styled(Typography)(({ theme }) => ({
 	},
 }));
 
+const HeroContainer = styled(Paper)(({ theme }) => ({
+	alignItems: 'center',
+	background: 'var(--glass-strong)',
+	WebkitBackdropFilter: 'blur(12px)',
+	backdropFilter: 'blur(12px)',
+	border: '1px solid var(--glass-border-strong)',
+	borderRadius: '32px',
+	boxShadow: `0 16px 40px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 var(--highlight-inner-strong)`,
+	display: 'flex',
+	flexDirection: 'column',
+	justifyContent: 'center',
+	margin: '0 auto',
+	maxWidth: '900px',
+	minHeight: '400px',
+	padding: theme.spacing(6, 4),
+	textAlign: 'center',
+	width: '100%',
+	[theme.breakpoints.down('md')]: {
+		borderRadius: '24px',
+		minHeight: '350px',
+		padding: theme.spacing(4, 3),
+	},
+	[theme.breakpoints.down('sm')]: {
+		borderRadius: '16px',
+		minHeight: '300px',
+		padding: theme.spacing(3, 2),
+	},
+}));
+
 const LinkButton = styled(Button)<ButtonProps & { to: To }>({
 	textDecoration: 'none',
 });
+
+const Name = styled(Typography)(({ theme }) => ({
+	color: theme.palette.text.primary,
+	fontSize: 'clamp(2.5rem, 8vw, 5.5rem)',
+	fontWeight: 800,
+	letterSpacing: '-0.02em',
+	lineHeight: 1.1,
+	marginBottom: theme.spacing(1.5),
+	textAlign: 'center',
+	textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+	width: '100%',
+	alignItems: 'center',
+	display: 'flex',
+	justifyContent: 'center',
+	minHeight: '1.2em',
+	minWidth: 'max-content',
+	overflow: 'visible',
+	whiteSpace: 'nowrap',
+}));
+
+const Title = styled(Typography)(({ theme }) => ({
+	alignItems: 'center',
+	color: theme.palette.text.secondary,
+	display: 'flex',
+	fontSize: 'clamp(1.125rem, 3vw, 1.5rem)',
+	fontWeight: 500,
+	justifyContent: 'center',
+	letterSpacing: '0.01em',
+	lineHeight: 1.6,
+	marginBottom: theme.spacing(2),
+	minHeight: '1.5em',
+	textAlign: 'center',
+	width: '100%',
+}));
 
 export default function Home() {
 	const heroAnimation = useSpring({
@@ -143,7 +144,7 @@ export default function Home() {
 		<>
 			<SEO
 				title="Home"
-				description={`${constants.fullName} - ${constants.title}. ${constants.descriptions}`}
+				description={`${CONSTANTS.fullName} - ${CONSTANTS.title}. ${CONSTANTS.descriptions}`}
 				keywords="Duy Nguyen, Software Developer, Portfolio, React, TypeScript, Java, Home"
 			/>
 			<Box
@@ -167,12 +168,12 @@ export default function Home() {
 								justifyContent: 'center',
 							}}
 						>
-							<Name>{constants.fullName}</Name>
-							<Title>{constants.title}</Title>
+							<Name>{CONSTANTS.fullName}</Name>
+							<Title>{CONSTANTS.title}</Title>
 						</Box>
 
 						<animated.div style={{ ...contentAnimation, width: '100%' }}>
-							<Description>{constants.descriptions}</Description>
+							<Description>{CONSTANTS.descriptions}</Description>
 
 							<Stack
 								direction={{ xs: 'column', sm: 'row' }}

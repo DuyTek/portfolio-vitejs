@@ -9,16 +9,228 @@ import {
 	Stack,
 	IconButton,
 	Collapse,
-	useTheme,
+	styled,
 } from '@mui/material';
 import {
 	ExpandMore as ExpandMoreIcon,
 	GitHub as GitHubIcon,
 } from '@mui/icons-material';
 import { useState } from 'react';
+
 import SEO from '../../components/SEO';
 
-const projects = [
+// Styled components
+const StyledCard = styled(Card)(() => ({
+	background: 'var(--glass-background)',
+	backdropFilter: 'var(--glass-backdrop)',
+	border: 'var(--glass-border)',
+	borderRadius: '16px',
+	boxShadow: 'none',
+	display: 'flex',
+	flexDirection: 'column',
+	height: '100%',
+	transition: 'all var(--transition-standard)',
+	'&:hover': {
+		transform: 'translateY(-2px)',
+	},
+}));
+
+const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
+	paddingBottom: theme.spacing(1),
+	'& .MuiCardHeader-content': {
+		minWidth: 0,
+	},
+}));
+
+const StyledCardContent = styled(CardContent)(() => ({
+	flex: 1,
+	paddingTop: 0,
+}));
+
+const HeaderTitle = styled(Typography)(({ theme }) => ({
+	color: theme.palette.primary.main,
+	fontSize: '1rem',
+	fontWeight: 600,
+	lineHeight: 1.3,
+	[theme.breakpoints.up('sm')]: {
+		fontSize: '1.1rem',
+	},
+}));
+
+const HeaderSubtitle = styled(Typography)(({ theme }) => ({
+	color: theme.palette.text.secondary,
+	fontSize: '0.8rem',
+	fontWeight: 500,
+	[theme.breakpoints.up('sm')]: {
+		fontSize: '0.875rem',
+	},
+}));
+
+const ActionBox = styled(Box)(() => ({
+	alignItems: 'center',
+	display: 'flex',
+}));
+
+const GitHubIconButton = styled(IconButton)(({ theme }) => ({
+	color: theme.palette.text.primary,
+	marginRight: theme.spacing(0.5),
+	'&:hover': {
+		color: theme.palette.primary.main,
+	},
+}));
+
+const ExpandIconButton = styled(IconButton, {
+	shouldForwardProp: (prop) => prop !== 'expanded',
+})<{ expanded: boolean }>(({ theme, expanded }) => ({
+	color: theme.palette.text.primary,
+	transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+	transition: theme.transitions.create('transform', {
+		duration: theme.transitions.duration.shortest,
+	}),
+	'&:hover': {
+		color: theme.palette.primary.main,
+	},
+}));
+
+const DescriptionText = styled(Typography, {
+	shouldForwardProp: (prop) => prop !== 'expanded',
+})<{ expanded: boolean }>(({ theme, expanded }) => ({
+	color: theme.palette.text.secondary,
+	display: '-webkit-box',
+	fontSize: '0.8rem',
+	lineHeight: 1.4,
+	marginBottom: theme.spacing(1.5),
+	overflow: 'hidden',
+	WebkitBoxOrient: 'vertical',
+	WebkitLineClamp: expanded ? 'none' : 3,
+	[theme.breakpoints.up('sm')]: {
+		fontSize: '0.875rem',
+	},
+}));
+
+const TechStackBox = styled(Box, {
+	shouldForwardProp: (prop) => prop !== 'expanded',
+})<{ expanded: boolean }>(({ theme, expanded }) => ({
+	marginBottom: expanded ? theme.spacing(2) : 0,
+}));
+
+const TechChip = styled(Chip)(({ theme }) => ({
+	fontSize: '0.65rem',
+	height: 18,
+	'& .MuiChip-label': {
+		paddingLeft: theme.spacing(0.75),
+		paddingRight: theme.spacing(0.75),
+	},
+	[theme.breakpoints.up('sm')]: {
+		fontSize: '0.7rem',
+		height: 20,
+	},
+}));
+
+const MoreChip = styled(Chip)(({ theme }) => ({
+	fontSize: '0.65rem',
+	height: 18,
+	opacity: 0.7,
+	'& .MuiChip-label': {
+		paddingLeft: theme.spacing(0.75),
+		paddingRight: theme.spacing(0.75),
+	},
+	[theme.breakpoints.up('sm')]: {
+		fontSize: '0.7rem',
+		height: 20,
+	},
+}));
+
+const CollapseBox = styled(Box)(({ theme }) => ({
+	marginTop: theme.spacing(2),
+}));
+
+const SectionTitle = styled(Typography)(({ theme }) => ({
+	color: theme.palette.primary.main,
+	fontSize: '0.8rem',
+	fontWeight: 600,
+	marginBottom: theme.spacing(1),
+	[theme.breakpoints.up('sm')]: {
+		fontSize: '0.875rem',
+	},
+}));
+
+const TaskText = styled(Typography)(({ theme }) => ({
+	color: theme.palette.text.secondary,
+	fontSize: '0.75rem',
+	lineHeight: 1.4,
+	marginBottom: theme.spacing(0.5),
+	paddingLeft: theme.spacing(1),
+	position: 'relative',
+	'&::before': {
+		color: theme.palette.primary.main,
+		content: '"•"',
+		left: 0,
+		position: 'absolute',
+	},
+	[theme.breakpoints.up('sm')]: {
+		fontSize: '0.8rem',
+	},
+}));
+
+const AchievementText = styled(Typography)(({ theme }) => ({
+	color: theme.palette.text.secondary,
+	fontSize: '0.75rem',
+	lineHeight: 1.4,
+	[theme.breakpoints.up('sm')]: {
+		fontSize: '0.8rem',
+	},
+}));
+
+const ProjectsContainer = styled(Box)(() => ({
+	display: 'flex',
+	flexDirection: 'column',
+	height: '100%',
+	overflow: 'hidden',
+	width: '100%',
+}));
+
+const ProjectsTitle = styled(Typography)(({ theme }) => ({
+	color: theme.palette.primary.main,
+	fontWeight: 600,
+	marginBottom: theme.spacing(2),
+	textAlign: 'center',
+	[theme.breakpoints.up('sm')]: {
+		marginBottom: theme.spacing(3),
+	},
+}));
+
+const ScrollableBox = styled(Box)(({ theme }) => ({
+	flex: 1,
+	overflow: 'auto',
+	paddingLeft: theme.spacing(1),
+	paddingRight: theme.spacing(1),
+	'&::-webkit-scrollbar': {
+		width: '8px',
+	},
+	'&::-webkit-scrollbar-track': {
+		background: 'var(--glass-background)',
+		borderRadius: '4px',
+	},
+	'&::-webkit-scrollbar-thumb': {
+		background: 'var(--glass-border-color)',
+		borderRadius: '4px',
+		'&:hover': {
+			background: 'rgba(255, 255, 255, 0.3)',
+		},
+	},
+	[theme.breakpoints.up('sm')]: {
+		paddingLeft: theme.spacing(2),
+		paddingRight: theme.spacing(2),
+	},
+}));
+
+const ProjectsGrid = styled(Grid)(({ theme }) => ({
+	paddingBottom: theme.spacing(2),
+}));
+
+// Constants
+const PROJECTS = [
 	{
 		title: 'PowerAI - An AI-Powered Testing Assistant',
 		role: 'Creator',
@@ -90,12 +302,11 @@ const projects = [
 ];
 
 interface ProjectCardProps {
-	project: (typeof projects)[0];
+	project: (typeof PROJECTS)[0];
 }
 
 function ProjectCard({ project }: ProjectCardProps) {
 	const [expanded, setExpanded] = useState(false);
-	const theme = useTheme();
 
 	const handleExpandClick = () => {
 		setExpanded(!expanded);
@@ -112,215 +323,87 @@ function ProjectCard({ project }: ProjectCardProps) {
 	};
 
 	return (
-		<Card
-			elevation={0}
-			sx={{
-				background: 'var(--glass-background)',
-				backdropFilter: 'var(--glass-backdrop)',
-				border: 'var(--glass-border)',
-				borderRadius: '16px',
-				transition: 'all var(--transition-standard)',
-				'&:hover': {
-					transform: 'translateY(-2px)',
-				},
-				height: '100%',
-				display: 'flex',
-				flexDirection: 'column',
-				boxShadow: 'none',
-			}}
-		>
-			<CardHeader
-				title={
-					<Typography
-						variant="h6"
-						sx={{
-							fontSize: { xs: '1rem', sm: '1.1rem' },
-							fontWeight: 600,
-							lineHeight: 1.3,
-							color: 'primary.main',
-						}}
-					>
-						{project.title}
-					</Typography>
-				}
+		<StyledCard elevation={0}>
+			<StyledCardHeader
+				title={<HeaderTitle variant="h6">{project.title}</HeaderTitle>}
 				subheader={
-					<Typography
-						variant="body2"
-						sx={{
-							fontSize: { xs: '0.8rem', sm: '0.875rem' },
-							color: 'text.secondary',
-							fontWeight: 500,
-						}}
-					>
-						{project.role}
-					</Typography>
+					<HeaderSubtitle variant="body2">{project.role}</HeaderSubtitle>
 				}
 				action={
-					<Box sx={{ display: 'flex', alignItems: 'center' }}>
+					<ActionBox>
 						{project.sourceLink && (
-							<IconButton
+							<GitHubIconButton
 								onClick={handleGitHubClick}
 								aria-label="view source code"
 								size="small"
-								sx={{
-									color: 'text.primary',
-									mr: 0.5,
-									'&:hover': {
-										color: 'primary.main',
-									},
-								}}
 							>
 								<GitHubIcon fontSize="small" />
-							</IconButton>
+							</GitHubIconButton>
 						)}
-						<IconButton
+						<ExpandIconButton
 							onClick={handleExpandClick}
 							aria-expanded={expanded}
 							aria-label="show more"
 							size="small"
-							sx={{
-								transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
-								transition: theme.transitions.create('transform', {
-									duration: theme.transitions.duration.shortest,
-								}),
-								color: 'text.primary',
-								'&:hover': {
-									color: 'primary.main',
-								},
-							}}
+							expanded={expanded}
 						>
 							<ExpandMoreIcon fontSize="small" />
-						</IconButton>
-					</Box>
+						</ExpandIconButton>
+					</ActionBox>
 				}
-				sx={{
-					pb: 1,
-					'& .MuiCardHeader-content': {
-						minWidth: 0,
-					},
-				}}
 			/>
-			<CardContent sx={{ flex: 1, pt: 0 }}>
-				<Typography
-					variant="body2"
-					color="text.secondary"
-					sx={{
-						fontSize: { xs: '0.8rem', sm: '0.875rem' },
-						lineHeight: 1.4,
-						mb: 1.5,
-						display: '-webkit-box',
-						WebkitLineClamp: expanded ? 'none' : 3,
-						WebkitBoxOrient: 'vertical',
-						overflow: 'hidden',
-					}}
-				>
+			<StyledCardContent>
+				<DescriptionText variant="body2" expanded={expanded}>
 					{project.description}
-				</Typography>
+				</DescriptionText>
 
 				{/* Always show a preview of tech stack */}
-				<Box sx={{ mb: expanded ? 2 : 0 }}>
+				<TechStackBox expanded={expanded}>
 					<Stack direction="row" spacing={0.5} useFlexGap flexWrap="wrap">
 						{project.techStack
 							.slice(0, expanded ? project.techStack.length : 4)
 							.map((tech) => (
-								<Chip
+								<TechChip
 									variant="outlined"
 									color="primary"
 									size="small"
 									label={tech}
 									key={tech}
-									sx={{
-										fontSize: { xs: '0.65rem', sm: '0.7rem' },
-										height: { xs: 18, sm: 20 },
-										'& .MuiChip-label': {
-											px: 0.75,
-										},
-									}}
 								/>
 							))}
 						{!expanded && project.techStack.length > 4 && (
-							<Chip
+							<MoreChip
 								variant="outlined"
 								size="small"
 								label={`+${project.techStack.length - 4}`}
-								sx={{
-									fontSize: { xs: '0.65rem', sm: '0.7rem' },
-									height: { xs: 18, sm: 20 },
-									'& .MuiChip-label': {
-										px: 0.75,
-									},
-									opacity: 0.7,
-								}}
 							/>
 						)}
 					</Stack>
-				</Box>
+				</TechStackBox>
 
 				<Collapse in={expanded} timeout="auto" unmountOnExit>
-					<Box sx={{ mt: 2 }}>
-						<Typography
-							variant="subtitle2"
-							gutterBottom
-							sx={{
-								fontWeight: 600,
-								color: 'primary.main',
-								fontSize: { xs: '0.8rem', sm: '0.875rem' },
-								mb: 1,
-							}}
-						>
+					<CollapseBox>
+						<SectionTitle variant="subtitle2" gutterBottom>
 							Key Tasks
-						</Typography>
+						</SectionTitle>
 						{project.tasks.map((task, i) => (
-							<Typography
-								key={i}
-								variant="body2"
-								sx={{
-									fontSize: { xs: '0.75rem', sm: '0.8rem' },
-									lineHeight: 1.4,
-									mb: 0.5,
-									color: 'text.secondary',
-									pl: 1,
-									position: 'relative',
-									'&::before': {
-										content: '"•"',
-										position: 'absolute',
-										left: 0,
-										color: 'primary.main',
-									},
-								}}
-							>
+							<TaskText key={i} variant="body2">
 								{task}
-							</Typography>
+							</TaskText>
 						))}
-					</Box>
+					</CollapseBox>
 
-					<Box sx={{ mt: 2 }}>
-						<Typography
-							variant="subtitle2"
-							gutterBottom
-							sx={{
-								fontWeight: 600,
-								color: 'primary.main',
-								fontSize: { xs: '0.8rem', sm: '0.875rem' },
-								mb: 1,
-							}}
-						>
+					<CollapseBox>
+						<SectionTitle variant="subtitle2" gutterBottom>
 							Achievements
-						</Typography>
-						<Typography
-							variant="body2"
-							sx={{
-								fontSize: { xs: '0.75rem', sm: '0.8rem' },
-								lineHeight: 1.4,
-								color: 'text.secondary',
-							}}
-						>
+						</SectionTitle>
+						<AchievementText variant="body2">
 							{project.achievements}
-						</Typography>
-					</Box>
+						</AchievementText>
+					</CollapseBox>
 				</Collapse>
-			</CardContent>
-		</Card>
+			</StyledCardContent>
+		</StyledCard>
 	);
 }
 
@@ -332,57 +415,20 @@ export default function Projects() {
 				description="Explore Duy Nguyen's software development projects including PowerAI, Furni Finders, and APLY. React, TypeScript, Java, and full-stack development projects."
 				keywords="Duy Nguyen Projects, PowerAI, Software Projects, React Projects, TypeScript, Java Projects, Full-stack Development, Portfolio Projects"
 			/>
-			<Box
-				sx={{
-					width: '100%',
-					height: '100%',
-					display: 'flex',
-					flexDirection: 'column',
-					overflow: 'hidden',
-				}}
-			>
-				<Typography
-					variant="h4"
-					gutterBottom
-					sx={{
-						fontWeight: 600,
-						mb: { xs: 2, sm: 3 },
-						textAlign: 'center',
-						color: 'primary.main',
-					}}
-				>
+			<ProjectsContainer>
+				<ProjectsTitle variant="h4" gutterBottom>
 					Projects
-				</Typography>
-				<Box
-					sx={{
-						flex: 1,
-						overflow: 'auto',
-						px: { xs: 1, sm: 2 },
-						'&::-webkit-scrollbar': {
-							width: '8px',
-						},
-						'&::-webkit-scrollbar-track': {
-							background: 'var(--glass-background)',
-							borderRadius: '4px',
-						},
-						'&::-webkit-scrollbar-thumb': {
-							background: 'var(--glass-border-color)',
-							borderRadius: '4px',
-							'&:hover': {
-								background: 'rgba(255, 255, 255, 0.3)',
-							},
-						},
-					}}
-				>
-					<Grid container spacing={{ xs: 2, sm: 3 }} sx={{ pb: 2 }}>
-						{projects.map((project, index) => (
+				</ProjectsTitle>
+				<ScrollableBox>
+					<ProjectsGrid container spacing={{ xs: 2, sm: 3 }}>
+						{PROJECTS.map((project, index) => (
 							<Grid size={{ xs: 12, sm: 6, lg: 4 }} key={index}>
 								<ProjectCard project={project} />
 							</Grid>
 						))}
-					</Grid>
-				</Box>
-			</Box>
+					</ProjectsGrid>
+				</ScrollableBox>
+			</ProjectsContainer>
 		</>
 	);
 }

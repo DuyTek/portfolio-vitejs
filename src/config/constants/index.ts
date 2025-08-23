@@ -1,4 +1,4 @@
-export const constants = {
+export const CONSTANTS = {
 	fullName: 'Duy Nguyen',
 	title: 'Software Developer',
 	descriptions:
