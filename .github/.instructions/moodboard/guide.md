@@ -17,6 +17,13 @@ The Liquid Glass theme embodies a serene, clean, and sophisticated aesthetic thr
 
 This comprehensive style guide is organized into focused sections for easy reference and implementation:
 
+## Coding convention
+
+- All sx and custom styles should be placed at the top using styled from @mui/material to make the render pure. The css should be arranged alphabetically
+- Any composition styled components that are complex, consider moving it to src/components/common
+- The file's order: imports, constants, interfaces/types, styled components
+- Constants should be in uppercase.
+
 ### 🔮 [Core Effects](./core-effects.md)
 
 The foundational CSS for the signature "Liquid Glass" containers, including:

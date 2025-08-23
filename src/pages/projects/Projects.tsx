@@ -118,15 +118,15 @@ function ProjectCard({ project }: ProjectCardProps) {
 				background: 'var(--glass-background)',
 				backdropFilter: 'var(--glass-backdrop)',
 				border: 'var(--glass-border)',
-				borderRadius: 'var(--glass-border-radius)',
+				borderRadius: '16px',
 				transition: 'all var(--transition-standard)',
 				'&:hover': {
 					transform: 'translateY(-2px)',
-					boxShadow: 'var(--glass-shadow-elevated)',
 				},
 				height: '100%',
 				display: 'flex',
 				flexDirection: 'column',
+				boxShadow: 'none',
 			}}
 		>
 			<CardHeader
